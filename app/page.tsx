@@ -105,28 +105,32 @@ export default function RealEstateMediaLandingPage() {
       type: "Listing Video",
       description:
         "A cinematic real estate showcase created for social media marketing and listing visibility.",
-      videoSrc: "/videos/portfolio-1.mp4",
+      videoSrc:
+        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/4390_Normandy_%20Place_V5.mp4",
     },
     {
       title: "Agent Branding Reel",
       type: "Branding Video",
       description:
         "A personal brand focused reel designed to elevate agent presence and build trust online.",
-      videoSrc: "/videos/portfolio-2.mp4",
+      videoSrc:
+        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Rosemount%20v2.mov",
     },
     {
       title: "Luxury Property Reel",
       type: "Listing Video",
       description:
         "A cinematic property showcase built to create attention, highlight the home, and elevate the listing online.",
-      videoSrc: "/videos/portfolio-3.mp4",
+      videoSrc:
+        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/869%20Lawson%20Ave%20Raw%20Footage%20V2%20%281%29.mov",
     },
     {
       title: "Property Showcase Reel",
       type: "Listing Video",
       description:
         "A polished real estate reel created to showcase the property with cinematic movement and strong visual presentation.",
-      videoSrc: "/videos/portfolio-4.mp4",
+      videoSrc:
+        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Abbott_Dr_N_Reel_V2.mp4",
     },
   ];
 
@@ -304,7 +308,7 @@ export default function RealEstateMediaLandingPage() {
               Cinematic real estate content that helps agents stand out.
             </h1>
 
-            <p className="mt-6 max-w-2xl text-base leading-7 text-white/90 sm:text-lg">
+            <p className="mt-6 max-w-2xl text-base leading-7 text-white sm:text-lg">
               We create cinematic listings, agent branding videos, HDR
               photography, and social-first content that helps real estate
               professionals show up at a higher level across Instagram,
@@ -332,7 +336,7 @@ export default function RealEstateMediaLandingPage() {
               </a>
               <a
                 href="#services"
-                className="rounded-2xl border border-[#f4cf36]/25 bg-[#14110a] px-6 py-3 text-sm font-medium text-[#f7ebc6] transition hover:bg-[#1d170c]"
+                className="rounded-2xl border border-[#f4cf36]/25 bg-[#14110a] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#1d170c]"
               >
                 Explore Services
               </a>
@@ -349,7 +353,7 @@ export default function RealEstateMediaLandingPage() {
                 <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-black">
                   <video
                     className="aspect-[9/19.5] w-full object-cover"
-                    src="/videos/portfolio-4.mp4"
+                    src="https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Rosemount%20v2.mov"
                     autoPlay
                     muted
                     loop
@@ -407,7 +411,7 @@ export default function RealEstateMediaLandingPage() {
               memorable.
             </h2>
           </div>
-          <div className="space-y-5 leading-7 text-[#efe6cc]">
+          <div className="space-y-5 leading-7 text-white">
             <p>
               MAVN Creative creates visual content for agents, buyers, sellers,
               and property developers who want more than basic marketing. We
@@ -438,7 +442,7 @@ export default function RealEstateMediaLandingPage() {
                 What we do
               </h2>
             </div>
-            <p className="max-w-2xl text-sm leading-6 text-[#efe6cc]">
+            <p className="max-w-2xl text-sm leading-6 text-white">
               Built for agents and brands that want stronger content, stronger
               presentation, and stronger positioning in a crowded market.
             </p>
@@ -453,7 +457,7 @@ export default function RealEstateMediaLandingPage() {
                 <h3 className="text-xl font-medium text-white">
                   {service.title}
                 </h3>
-                <p className="mt-3 text-sm leading-6 text-[#efe6cc]">
+                <p className="mt-3 text-sm leading-6 text-white">
                   {service.description}
                 </p>
               </div>
@@ -473,7 +477,7 @@ export default function RealEstateMediaLandingPage() {
           <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">
             Recent work
           </h2>
-          <p className="mt-4 max-w-2xl leading-7 text-[#efe6cc]">
+          <p className="mt-4 max-w-2xl leading-7 text-white">
             Use this section to embed listing films, social reels, brand videos,
             and photo galleries that show the quality of your work instantly.
           </p>
@@ -494,13 +498,13 @@ export default function RealEstateMediaLandingPage() {
                   playsInline
                   preload="metadata"
                 />
-                <div className="absolute left-8 top-8 rounded-full border border-[#f4cf36]/25 bg-[#120e09]/95 px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-[#f7ebc6]">
+                <div className="absolute left-8 top-8 rounded-full border border-[#f4cf36]/25 bg-[#120e09]/95 px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-white">
                   {item.type}
                 </div>
               </div>
               <div className="space-y-3 px-6 pb-6 pt-2 text-center">
                 <h3 className="text-xl font-medium text-white">{item.title}</h3>
-                <p className="text-sm leading-6 text-[#efe6cc]">
+                <p className="text-sm leading-6 text-white">
                   {item.description}
                 </p>
               </div>
@@ -526,11 +530,11 @@ export default function RealEstateMediaLandingPage() {
                 key={item.step}
                 className="rounded-[28px] border border-[#f4cf36]/20 bg-[#120e09] p-6"
               >
-                <p className="text-sm text-[#dcb95a]">Step {item.step}</p>
+                <p className="text-sm text-white/85">Step {item.step}</p>
                 <h3 className="mt-3 text-xl font-medium text-white">
                   {item.title}
                 </h3>
-                <p className="mt-3 text-sm leading-6 text-[#efe6cc]">
+                <p className="mt-3 text-sm leading-6 text-white">
                   {item.description}
                 </p>
               </div>
@@ -568,14 +572,14 @@ export default function RealEstateMediaLandingPage() {
                 <h3 className="text-2xl font-semibold text-white">
                   {pkg.name}
                 </h3>
-                <p className="mt-2 text-sm leading-6 text-[#efe6cc]">
+                <p className="mt-2 text-sm leading-6 text-white">
                   {pkg.subtitle}
                 </p>
                 <div className="mt-5 border-y border-[#f4cf36]/15 py-5">
                   <p className="text-5xl font-semibold tracking-tight text-white">
                     {pkg.price}
                   </p>
-                  <p className="mt-1 text-sm text-[#efe6cc]/75">
+                  <p className="mt-1 text-sm text-white/90">
                     {pkg.price === "Custom" ? "quote based on scope" : "per property"}
                   </p>
                 </div>
@@ -583,13 +587,13 @@ export default function RealEstateMediaLandingPage() {
                   {pkg.includes.map((item) => (
                     <div
                       key={item}
-                      className="rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3 text-sm text-[#f7ebc6]"
+                      className="rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3 text-sm text-white"
                     >
                       {item}
                     </div>
                   ))}
                 </div>
-                <div className="mt-5 rounded-2xl bg-[#f4cf36]/12 px-4 py-3 text-sm font-medium text-[#f4cf36]">
+                <div className="mt-5 rounded-2xl bg-[#f4cf36]/12 px-4 py-3 text-sm font-medium text-white">
                   {pkg.addOn}
                 </div>
                 <a
@@ -644,10 +648,7 @@ export default function RealEstateMediaLandingPage() {
         </div>
       </section>
 
-      <section
-        id="contact"
-        className="border-t border-[#f4cf36]/20 bg-[#0c0905]"
-      >
+      <section id="contact" className="border-t border-[#f4cf36]/20 bg-[#0c0905]">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
           <div className="mb-12 max-w-3xl">
             <p className="text-sm uppercase tracking-[0.28em] text-[#f4cf36]">
@@ -685,7 +686,6 @@ export default function RealEstateMediaLandingPage() {
                     className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3 text-white placeholder:text-white/40 outline-none transition focus:border-[#f4cf36]/50"
                   />
                 </div>
-
                 <div>
                   <label className="mb-2 block text-sm font-medium text-white">
                     Email Address
@@ -701,7 +701,6 @@ export default function RealEstateMediaLandingPage() {
                     className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3 text-white placeholder:text-white/40 outline-none transition focus:border-[#f4cf36]/50"
                   />
                 </div>
-
                 <div>
                   <label className="mb-2 block text-sm font-medium text-white">
                     Phone Number
@@ -717,7 +716,6 @@ export default function RealEstateMediaLandingPage() {
                     className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3 text-white placeholder:text-white/40 outline-none transition focus:border-[#f4cf36]/50"
                   />
                 </div>
-
                 <div>
                   <label className="mb-2 block text-sm font-medium text-white">
                     Your Location
@@ -736,7 +734,6 @@ export default function RealEstateMediaLandingPage() {
                     className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3 text-white placeholder:text-white/40 outline-none transition focus:border-[#f4cf36]/50"
                   />
                 </div>
-
                 <div className="md:col-span-2">
                   <label className="mb-2 block text-sm font-medium text-white">
                     What Do You Need?
@@ -760,7 +757,6 @@ export default function RealEstateMediaLandingPage() {
                     <option>Other</option>
                   </select>
                 </div>
-
                 <div className="md:col-span-2">
                   <label className="mb-2 block text-sm font-medium text-white">
                     Property Address
@@ -779,7 +775,6 @@ export default function RealEstateMediaLandingPage() {
                     className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3 text-white placeholder:text-white/40 outline-none transition focus:border-[#f4cf36]/50"
                   />
                 </div>
-
                 <div>
                   <label className="mb-2 block text-sm font-medium text-white">
                     Property City
@@ -798,7 +793,6 @@ export default function RealEstateMediaLandingPage() {
                     className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3 text-white placeholder:text-white/40 outline-none transition focus:border-[#f4cf36]/50"
                   />
                 </div>
-
                 <div>
                   <label className="mb-2 block text-sm font-medium text-white">
                     Property State
@@ -817,7 +811,6 @@ export default function RealEstateMediaLandingPage() {
                     className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3 text-white placeholder:text-white/40 outline-none transition focus:border-[#f4cf36]/50"
                   />
                 </div>
-
                 <div>
                   <label className="mb-2 block text-sm font-medium text-white">
                     Square Footage
@@ -836,7 +829,6 @@ export default function RealEstateMediaLandingPage() {
                     className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3 text-white placeholder:text-white/40 outline-none transition focus:border-[#f4cf36]/50"
                   />
                 </div>
-
                 <div>
                   <label className="mb-2 block text-sm font-medium text-white">
                     Bedrooms / Bathrooms
@@ -852,7 +844,6 @@ export default function RealEstateMediaLandingPage() {
                     className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3 text-white placeholder:text-white/40 outline-none transition focus:border-[#f4cf36]/50"
                   />
                 </div>
-
                 <div>
                   <label className="mb-2 block text-sm font-medium text-white">
                     Preferred Shoot Date
@@ -870,7 +861,6 @@ export default function RealEstateMediaLandingPage() {
                     className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3 text-white outline-none transition focus:border-[#f4cf36]/50"
                   />
                 </div>
-
                 <div>
                   <label className="mb-2 block text-sm font-medium text-white">
                     MLS / Listing Status
@@ -889,7 +879,6 @@ export default function RealEstateMediaLandingPage() {
                     className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3 text-white placeholder:text-white/40 outline-none transition focus:border-[#f4cf36]/50"
                   />
                 </div>
-
                 <div className="md:col-span-2">
                   <label className="mb-2 block text-sm font-medium text-white">
                     Project Notes
@@ -936,7 +925,6 @@ export default function RealEstateMediaLandingPage() {
                   contact@mavncreative.com
                 </a>
               </div>
-
               <div className="rounded-[28px] border border-[#f4cf36]/20 bg-[#120e09] p-6">
                 <p className="text-sm uppercase tracking-[0.18em] text-white/85">
                   Phone
@@ -948,7 +936,6 @@ export default function RealEstateMediaLandingPage() {
                   (612) 488-3825
                 </a>
               </div>
-
               <div className="rounded-[28px] border border-[#f4cf36]/20 bg-[#120e09] p-6">
                 <p className="text-sm uppercase tracking-[0.18em] text-white/85">
                   Launch Note
@@ -958,7 +945,6 @@ export default function RealEstateMediaLandingPage() {
                   project details here and we’ll confirm the booking manually.
                 </p>
               </div>
-
               <div className="rounded-[28px] border border-[#f4cf36]/20 bg-[#120e09] p-6">
                 <p className="text-sm uppercase tracking-[0.18em] text-white/85">
                   What Happens Next
