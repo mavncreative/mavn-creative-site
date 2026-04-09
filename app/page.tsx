@@ -49,13 +49,14 @@ function VideoPlayer({
   const [errored, setErrored] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Attempt programmatic play for autoplay (catches DOMException on some browsers)
   useEffect(() => {
     if (!autoPlay || !videoRef.current) return;
-    videoRef.current.play().catch(() => {
-      // Silently fail — browser blocked autoplay; video remains paused
-    });
+    videoRef.current.play().catch(() => {});
   }, [autoPlay]);
+
+  // MOV files: use video/mp4 type hint so Chrome/Firefox attempt H.264 decode
+  // instead of rejecting on the video/quicktime MIME type from the server.
+  const isMov = src.toLowerCase().includes(".mov");
 
   if (errored) {
     return (
@@ -92,7 +93,6 @@ function VideoPlayer({
   return (
     <video
       ref={videoRef}
-      src={src}
       className={className}
       style={style}
       muted={muted}
@@ -101,7 +101,10 @@ function VideoPlayer({
       controls={controls}
       preload={preload ?? "metadata"}
       onError={() => setErrored(true)}
-    />
+    >
+      {/* type="video/mp4" lets Chrome/Firefox attempt playback of MOV/H.264 */}
+      <source src={src} type={isMov ? "video/mp4" : "video/mp4"} />
+    </video>
   );
 }
 
