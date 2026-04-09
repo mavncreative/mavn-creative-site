@@ -1,7 +1,10 @@
 import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+// Lazy-init so module load doesn't throw during build without env vars
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!);
+}
 
 const PACKAGES = {
   essential: {
@@ -38,6 +41,7 @@ export async function POST(req: NextRequest) {
     const proto = host.includes("localhost") ? "http" : "https";
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? `${proto}://${host}`;
 
+    const stripe = getStripe();
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [

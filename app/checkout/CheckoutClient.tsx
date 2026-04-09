@@ -224,12 +224,12 @@ export default function CheckoutClient() {
           <div className="space-y-4">
             <div
               className={`rounded-[28px] border p-6 ${
-                pkg.featured
+                "featured" in pkg && pkg.featured
                   ? "border-[#f4cf36]/45 bg-[#1a140b]"
                   : "border-[#f4cf36]/20 bg-[#14110a]"
               }`}
             >
-              {pkg.featured && (
+              {"featured" in pkg && pkg.featured && (
                 <div className="mb-4 inline-flex rounded-full border border-[#f4cf36]/30 bg-[#f4cf36] px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-black">
                   Most Popular
                 </div>

@@ -24,6 +24,46 @@ function useScrollAnimations() {
   }, []);
 }
 
+// ── Animated section background orbs ─────────────────────────────────────────
+function AnimatedBg({
+  orbs,
+}: {
+  orbs: Array<{
+    color: string;
+    size: string;
+    top?: string;
+    bottom?: string;
+    left?: string;
+    right?: string;
+    anim: "orb-a" | "orb-b" | "orb-c";
+    delay?: string;
+  }>;
+}) {
+  return (
+    <div
+      aria-hidden="true"
+      style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}
+    >
+      {orbs.map((o, i) => (
+        <div
+          key={i}
+          className={`orb ${o.anim === "orb-a" ? "orb-a" : o.anim === "orb-b" ? "orb-b" : "orb-c"}`}
+          style={{
+            background: o.color,
+            width: o.size,
+            height: o.size,
+            top: o.top,
+            bottom: o.bottom,
+            left: o.left,
+            right: o.right,
+            animationDelay: o.delay ?? "0s",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 // ── Video player with error fallback ─────────────────────────────────────────
 function VideoPlayer({
   src,
@@ -406,7 +446,12 @@ export default function RealEstateMediaLandingPage() {
 
       {/* ── Hero ── */}
       <section className="relative overflow-hidden bg-black">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(244,207,54,0.18),transparent_38%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(244,207,54,0.14),transparent_40%)]" />
+        <AnimatedBg orbs={[
+          { color: "rgba(244,207,54,0.22)", size: "600px", top: "-180px", left: "-120px",  anim: "orb-a", delay: "0s" },
+          { color: "rgba(200,140,30,0.16)",  size: "500px", top: "60px",  right: "-150px", anim: "orb-b", delay: "-4s" },
+          { color: "rgba(244,207,54,0.10)",  size: "380px", bottom: "0px", left: "30%",    anim: "orb-c", delay: "-8s" },
+        ]} />
         <div className="mx-auto grid max-w-7xl gap-14 px-6 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:px-10 lg:py-28">
           <div className="relative z-10 anim in">
             <div className="mb-6 flex items-center gap-4">
@@ -550,9 +595,14 @@ export default function RealEstateMediaLandingPage() {
       {/* ── Services ── */}
       <section
         id="services"
-        className="border-y border-[#f4cf36]/20 bg-[#0c0905]"
+        className="relative overflow-hidden border-y border-[#f4cf36]/20 bg-[#0c0905]"
       >
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+        <AnimatedBg orbs={[
+          { color: "rgba(244,207,54,0.18)", size: "500px", top: "-100px", right: "-80px",  anim: "orb-b", delay: "-3s" },
+          { color: "rgba(180,110,20,0.14)",  size: "420px", bottom: "-60px", left: "10%",  anim: "orb-a", delay: "-7s" },
+          { color: "rgba(244,207,54,0.08)",  size: "300px", top: "40%",  left: "-60px",    anim: "orb-c", delay: "-12s" },
+        ]} />
+        <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-10">
           <div className="anim mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <p className="text-sm uppercase tracking-[0.28em] text-[#f4cf36]">
@@ -590,8 +640,13 @@ export default function RealEstateMediaLandingPage() {
       {/* ── Portfolio ── */}
       <section
         id="portfolio"
-        className="mx-auto max-w-7xl px-6 py-20 lg:px-10"
+        className="relative overflow-hidden bg-[#050505]"
       >
+        <AnimatedBg orbs={[
+          { color: "rgba(244,207,54,0.15)", size: "550px", top: "0px",    left: "-100px",  anim: "orb-c", delay: "-5s" },
+          { color: "rgba(220,160,40,0.12)",  size: "400px", bottom: "50px", right: "-80px", anim: "orb-a", delay: "-9s" },
+        ]} />
+        <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-10">
         <div className="anim mb-10">
           <p className="text-sm uppercase tracking-[0.28em] text-[#f4cf36]">
             Portfolio
@@ -635,11 +690,16 @@ export default function RealEstateMediaLandingPage() {
             </div>
           ))}
         </div>
+        </div>
       </section>
 
       {/* ── Process ── */}
-      <section className="border-y border-[#f4cf36]/20 bg-[#0c0905]">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+      <section className="relative overflow-hidden border-y border-[#f4cf36]/20 bg-[#0c0905]">
+        <AnimatedBg orbs={[
+          { color: "rgba(244,207,54,0.16)", size: "480px", top: "-80px",  right: "5%",    anim: "orb-a", delay: "-2s" },
+          { color: "rgba(180,110,20,0.12)",  size: "360px", bottom: "-40px", left: "-60px", anim: "orb-b", delay: "-6s" },
+        ]} />
+        <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-10">
           <div className="anim mb-10">
             <p className="text-sm uppercase tracking-[0.28em] text-[#f4cf36]">
               Process
@@ -670,8 +730,13 @@ export default function RealEstateMediaLandingPage() {
       </section>
 
       {/* ── Packages ── */}
-      <section className="border-y border-[#f4cf36]/20 bg-[#050505]">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+      <section id="packages" className="relative overflow-hidden border-y border-[#f4cf36]/20 bg-[#050505]">
+        <AnimatedBg orbs={[
+          { color: "rgba(244,207,54,0.22)", size: "620px", top: "-140px", left: "-100px",  anim: "orb-b", delay: "-1s" },
+          { color: "rgba(200,130,20,0.16)",  size: "500px", top: "30%",  right: "-120px",  anim: "orb-a", delay: "-5s" },
+          { color: "rgba(244,207,54,0.10)",  size: "350px", bottom: "-80px", left: "35%",  anim: "orb-c", delay: "-10s" },
+        ]} />
+        <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-10">
           <div className="anim mb-10">
             <p className="text-sm uppercase tracking-[0.28em] text-[#f4cf36]">
               Packages
@@ -726,9 +791,10 @@ export default function RealEstateMediaLandingPage() {
                 </div>
                 <a
                   href={pkg.price === "Custom" ? "#contact" : `/checkout?package=${pkg.name.toLowerCase()}`}
-                  className="btn-press mt-6 inline-flex rounded-2xl bg-[#f4cf36] px-5 py-3 text-sm font-medium text-black"
+                  className="btn-press mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#f4cf36] px-5 py-3.5 text-sm font-semibold text-black"
                 >
                   {pkg.price === "Custom" ? "Get a Quote" : "Book Now"}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </a>
               </div>
             ))}
@@ -779,8 +845,12 @@ export default function RealEstateMediaLandingPage() {
       </section>
 
       {/* ── Contact ── */}
-      <section id="contact" className="border-t border-[#f4cf36]/20 bg-[#0c0905]">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+      <section id="contact" className="relative overflow-hidden border-t border-[#f4cf36]/20 bg-[#0c0905]">
+        <AnimatedBg orbs={[
+          { color: "rgba(244,207,54,0.16)", size: "520px", top: "-60px",  right: "-80px", anim: "orb-c", delay: "-4s" },
+          { color: "rgba(180,110,20,0.12)",  size: "400px", bottom: "0px", left: "-60px", anim: "orb-b", delay: "-8s" },
+        ]} />
+        <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-10">
           <div className="anim mb-12 max-w-3xl">
             <p className="text-sm uppercase tracking-[0.28em] text-[#f4cf36]">
               Booking

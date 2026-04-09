@@ -2,8 +2,9 @@ import Stripe from "stripe";
 import { Resend } from "resend";
 import { NextRequest, NextResponse } from "next/server";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-const resend = new Resend(process.env.RESEND_API_KEY!);
+// Lazy-init so module load doesn't throw during build without env vars
+function getStripe() { return new Stripe(process.env.STRIPE_SECRET_KEY!); }
+function getResend() { return new Resend(process.env.RESEND_API_KEY!); }
 
 const PACKAGE_LABELS: Record<string, string> = {
   essential: "Essential — $249",
@@ -19,6 +20,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "No signature" }, { status: 400 });
   }
 
+  const stripe = getStripe();
   let event: Stripe.Event;
   try {
     event = stripe.webhooks.constructEvent(
@@ -43,6 +45,7 @@ export async function POST(req: NextRequest) {
     const customerEmail = session.customer_email ?? meta.email ?? "Not provided";
 
     try {
+      const resend = getResend();
       await resend.emails.send({
         from: "MAVN Creative Bookings <onboarding@resend.dev>",
         to: ["contact@mavncreative.com"],
