@@ -231,7 +231,7 @@ export default function RealEstateMediaLandingPage() {
       description:
         "A personal brand focused reel designed to elevate agent presence and build trust online.",
       videoSrc:
-        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Rosemount%20v2.mov",
+        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Rosemount%20v2.mp4",
     },
     {
       title: "Luxury Property Reel",
@@ -239,7 +239,7 @@ export default function RealEstateMediaLandingPage() {
       description:
         "A cinematic property showcase built to create attention, highlight the home, and elevate the listing online.",
       videoSrc:
-        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/869%20Lawson%20Ave%20Raw%20Footage%20V2%20%281%29.mov",
+        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/869%20Lawson%20Ave%20Raw%20Footage%20V2.mp4",
     },
     {
       title: "Property Showcase Reel",
@@ -468,7 +468,7 @@ export default function RealEstateMediaLandingPage() {
                 <div className="absolute right-[18px] top-[145px] z-20 h-[68px] w-[3px] rounded-full bg-[#2a2a2a]" />
                 <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-black">
                   <VideoPlayer
-                    src="https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Rosemount%20v2.mov"
+                    src="https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Rosemount%20v2.mp4"
                     className="aspect-[9/19.5] w-full object-cover"
                     autoPlay
                     muted
