@@ -24,3 +24,90 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Scroll-triggered fade-up ── */
+.anim {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+.anim.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Card hover lift ── */
+.card-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  will-change: transform;
+}
+
+.card-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+}
+
+/* ── Nav glass on scroll ── */
+.nav-glass {
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  background-color: rgba(0, 0, 0, 0.88) !important;
+  box-shadow: 0 1px 0 rgba(244, 207, 54, 0.12);
+}
+
+/* ── Nav link underline slide ── */
+.nav-link {
+  position: relative;
+  color: rgba(255, 255, 255, 0.75);
+  transition: color 0.2s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: #f4cf36;
+  transition: width 0.25s ease;
+}
+
+.nav-link:hover {
+  color: #fff;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* ── Button press feel ── */
+.btn-press {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.btn-press:hover {
+  opacity: 0.9;
+}
+
+.btn-press:active {
+  transform: scale(0.97);
+}
+
+/* ── Video fallback ── */
+.video-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: #0f0c08;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+  text-align: center;
+}
