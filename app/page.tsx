@@ -725,10 +725,10 @@ export default function RealEstateMediaLandingPage() {
                   {pkg.addOn}
                 </div>
                 <a
-                  href="#contact"
+                  href={pkg.price === "Custom" ? "#contact" : `/checkout?package=${pkg.name.toLowerCase()}`}
                   className="btn-press mt-6 inline-flex rounded-2xl bg-[#f4cf36] px-5 py-3 text-sm font-medium text-black"
                 >
-                  Inquire Now
+                  {pkg.price === "Custom" ? "Get a Quote" : "Book Now"}
                 </a>
               </div>
             ))}
