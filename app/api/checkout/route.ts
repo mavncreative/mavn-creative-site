@@ -1,9 +1,14 @@
 import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
 
+export const runtime = "nodejs";
+
 // Lazy-init so module load doesn't throw during build without env vars
 function getStripe() {
-  return new Stripe(process.env.STRIPE_SECRET_KEY!);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return new (Stripe as any)(process.env.STRIPE_SECRET_KEY!, {
+    maxNetworkRetries: 1,
+  });
 }
 
 const PACKAGES = {
