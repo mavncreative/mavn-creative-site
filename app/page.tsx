@@ -119,7 +119,7 @@ function VideoPlayer({
           href={src}
           target="_blank"
           rel="noopener noreferrer"
-          style={{ color: "#f4cf36", textDecoration: "underline", fontSize: 13 }}
+          style={{ color: "#efcb6d", textDecoration: "underline", fontSize: 13 }}
         >
           Open video ↗
         </a>
@@ -186,7 +186,7 @@ export default function RealEstateMediaLandingPage() {
   ];
 
   const FeatureIcon = () => (
-    <span className="mt-0.5 inline-flex h-6 w-6 flex-none items-center justify-center rounded-full bg-[#f4cf36] text-xs font-semibold text-black">
+    <span className="mt-0.5 inline-flex h-6 w-6 flex-none items-center justify-center rounded-full bg-[#efcb6d] text-xs font-semibold text-black">
       ✓
     </span>
   );
@@ -389,11 +389,11 @@ export default function RealEstateMediaLandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white">
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
 
       {/* ── Navigation ── */}
       <header
-        className={`sticky top-0 z-50 border-b border-[#f4cf36]/20 bg-black transition-all duration-300 ${
+        className={`sticky top-0 z-50 border-b border-[#efcb6d]/20 bg-black transition-all duration-300 ${
           isScrolled ? "nav-glass" : ""
         }`}
       >
@@ -405,13 +405,13 @@ export default function RealEstateMediaLandingPage() {
               <img src={logoSrc} alt="MAVN Creative logo" className="h-9 w-auto object-contain" />
               <div className="leading-tight">
                 <p className="text-xs font-semibold tracking-[0.16em] text-white">MAVN Creative</p>
-                <p className="text-[10px] tracking-[0.24em] text-[#f4cf36]">REAL ESTATE MEDIA</p>
+                <p className="text-[10px] tracking-[0.24em] text-[#efcb6d]">REAL ESTATE MEDIA</p>
               </div>
             </div>
             <button
               onClick={() => setMobileNavOpen(!mobileNavOpen)}
               aria-label="Toggle navigation"
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 text-white transition hover:border-[#f4cf36]/40"
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 text-white transition hover:border-[#efcb6d]/40"
             >
               {mobileNavOpen ? (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -442,13 +442,13 @@ export default function RealEstateMediaLandingPage() {
                 ))}
               </nav>
               <div className="mt-4 flex flex-col gap-3">
-                <a href="tel:6124883825" className="text-sm text-white/55 transition hover:text-[#f4cf36]">
+                <a href="tel:6124883825" className="text-sm text-white/55 transition hover:text-[#efcb6d]">
                   (612) 488-3825
                 </a>
                 <a
                   href="#contact"
                   onClick={() => setMobileNavOpen(false)}
-                  className="btn-press rounded-2xl bg-[#f4cf36] px-5 py-3.5 text-center text-sm font-semibold text-black"
+                  className="btn-press rounded-2xl bg-[#efcb6d] px-5 py-3.5 text-center text-sm font-semibold text-black"
                 >
                   Book a Shoot
                 </a>
@@ -462,7 +462,7 @@ export default function RealEstateMediaLandingPage() {
               <img src={logoSrc} alt="MAVN Creative logo" className="h-11 w-auto object-contain" />
               <div>
                 <p className="font-semibold tracking-[0.18em] text-white">MAVN Creative</p>
-                <p className="tracking-[0.28em] text-[#f4cf36]">REAL ESTATE MEDIA</p>
+                <p className="tracking-[0.28em] text-[#efcb6d]">REAL ESTATE MEDIA</p>
               </div>
             </div>
             <div className="flex items-center gap-7 text-sm">
@@ -472,10 +472,10 @@ export default function RealEstateMediaLandingPage() {
               <a href="#packages" className="nav-link">Packages</a>
             </div>
             <div className="flex items-center gap-4 text-sm">
-              <a href="tel:6124883825" className="text-white/70 transition hover:text-[#f4cf36]">
+              <a href="tel:6124883825" className="text-white/70 transition hover:text-[#efcb6d]">
                 (612) 488-3825
               </a>
-              <a href="#contact" className="btn-press rounded-full bg-[#f4cf36] px-5 py-2.5 font-semibold text-black">
+              <a href="#contact" className="btn-press rounded-full bg-[#efcb6d] px-5 py-2.5 font-semibold text-black">
                 Book a Shoot
               </a>
             </div>
@@ -515,11 +515,11 @@ export default function RealEstateMediaLandingPage() {
         {/* Top fade from nav */}
         <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/50 to-transparent" />
         {/* Gold accent line at top */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#f4cf36]/50 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#efcb6d]/50 to-transparent" />
 
         {/* Subtle animated orbs behind content */}
         <AnimatedBg orbs={[
-          { color: "rgba(244,207,54,0.10)", size: "700px", top: "-180px", right: "-60px",   anim: "orb-a", delay: "0s"  },
+          { color: "rgba(239, 203, 109,0.10)", size: "700px", top: "-180px", right: "-60px",   anim: "orb-a", delay: "0s"  },
           { color: "rgba(200,140,30,0.08)",  size: "500px", bottom: "-80px", left: "-60px", anim: "orb-b", delay: "-7s" },
         ]} />
 
@@ -534,7 +534,7 @@ export default function RealEstateMediaLandingPage() {
             >
               <img src={logoSrc} alt="MAVN Creative" className="h-10 w-auto object-contain" />
               <span className="h-4 w-px bg-white/25" />
-              <p className="text-xs uppercase tracking-[0.36em] text-[#f4cf36]">
+              <p className="text-xs uppercase tracking-[0.36em] text-[#efcb6d]">
                 Minnesota Real Estate Media
               </p>
             </div>
@@ -547,7 +547,7 @@ export default function RealEstateMediaLandingPage() {
               <span className="hero-line block" style={{ animationDelay: "0.36s" }}>
                 content that helps
               </span>
-              <span className="hero-line block text-[#f4cf36]" style={{ animationDelay: "0.50s" }}>
+              <span className="hero-line block text-[#efcb6d]" style={{ animationDelay: "0.50s" }}>
                 agents stand out.
               </span>
             </h1>
@@ -569,7 +569,7 @@ export default function RealEstateMediaLandingPage() {
             >
               <a
                 href="#portfolio"
-                className="btn-press rounded-2xl bg-[#f4cf36] px-7 py-3.5 text-sm font-semibold text-black"
+                className="btn-press rounded-2xl bg-[#efcb6d] px-7 py-3.5 text-sm font-semibold text-black"
               >
                 View Our Work
               </a>
@@ -613,13 +613,13 @@ export default function RealEstateMediaLandingPage() {
       </section>
 
       {/* ── Why It Works ── */}
-      <section className="border-y border-[#e7dcc0] bg-white">
+      <section className="border-y border-[#292929] bg-[#0f0f0f]">
         <div className="mx-auto max-w-7xl px-5 py-12 sm:px-6 lg:px-10 lg:py-16">
           <div className="anim mb-8">
-            <p className="text-sm uppercase tracking-[0.28em] text-[#d4af37]">
+            <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">
               Why it works
             </p>
-            <h2 className="mt-4 text-2xl font-semibold text-black sm:text-3xl lg:text-4xl">
+            <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
               Media built for attention, perception, and results.
             </h2>
           </div>
@@ -628,13 +628,13 @@ export default function RealEstateMediaLandingPage() {
             {proofStats.map((stat, i) => (
               <div
                 key={stat.label}
-                className="anim card-lift rounded-[28px] border border-[#eadfbf] bg-[#fffaf0] p-6"
+                className="anim card-lift rounded-[28px] border border-[#292929] bg-[#1a1a1a] p-6"
                 data-delay={String(i * 100)}
               >
-                <p className="text-sm uppercase tracking-[0.2em] text-[#d4af37]">
+                <p className="text-sm uppercase tracking-[0.2em] text-[#efcb6d]">
                   {stat.label}
                 </p>
-                <p className="mt-4 text-3xl font-semibold text-black">
+                <p className="mt-4 text-3xl font-semibold text-white">
                   {stat.value}
                 </p>
               </div>
@@ -647,7 +647,7 @@ export default function RealEstateMediaLandingPage() {
       <section id="about" className="mx-auto max-w-7xl px-5 py-14 sm:px-6 lg:px-10 lg:py-20">
         <div className="anim grid gap-8 md:grid-cols-2 md:gap-10 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
-            <p className="text-sm uppercase tracking-[0.28em] text-[#f4cf36]">
+            <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">
               About
             </p>
             <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
@@ -668,17 +668,17 @@ export default function RealEstateMediaLandingPage() {
       {/* ── Services ── */}
       <section
         id="services"
-        className="relative overflow-hidden border-y border-[#f4cf36]/20 bg-[#0c0905]"
+        className="relative overflow-hidden border-y border-[#efcb6d]/20 bg-[#151515]"
       >
         <AnimatedBg orbs={[
-          { color: "rgba(244,207,54,0.18)", size: "500px", top: "-100px", right: "-80px",  anim: "orb-b", delay: "-3s" },
-          { color: "rgba(180,110,20,0.14)",  size: "420px", bottom: "-60px", left: "10%",  anim: "orb-a", delay: "-7s" },
-          { color: "rgba(244,207,54,0.08)",  size: "300px", top: "40%",  left: "-60px",    anim: "orb-c", delay: "-12s" },
+          { color: "rgba(239, 203, 109,0.18)", size: "500px", top: "-100px", right: "-80px",  anim: "orb-b", delay: "-3s" },
+          { color: "rgba(120, 95, 50,0.14)",  size: "420px", bottom: "-60px", left: "10%",  anim: "orb-a", delay: "-7s" },
+          { color: "rgba(239, 203, 109,0.08)",  size: "300px", top: "40%",  left: "-60px",    anim: "orb-c", delay: "-12s" },
         ]} />
         <div className="relative z-10 mx-auto max-w-7xl px-5 py-14 sm:px-6 lg:px-10 lg:py-20">
           <div className="anim mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-[0.28em] text-[#f4cf36]">
+              <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">
                 Services
               </p>
               <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
@@ -694,7 +694,7 @@ export default function RealEstateMediaLandingPage() {
             {services.map((service, i) => (
               <div
                 key={service.title}
-                className="anim card-lift rounded-[28px] border border-[#f4cf36]/20 bg-[#120e09] p-6 shadow-2xl shadow-black/30"
+                className="anim card-lift rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6 shadow-2xl shadow-black/30"
                 data-delay={String((i % 3) * 90)}
               >
                 <h3 className="text-xl font-medium text-white">
@@ -712,15 +712,15 @@ export default function RealEstateMediaLandingPage() {
       {/* ── Portfolio ── */}
       <section
         id="portfolio"
-        className="relative overflow-hidden bg-[#050505]"
+        className="relative overflow-hidden bg-[#0a0a0a]"
       >
         <AnimatedBg orbs={[
-          { color: "rgba(244,207,54,0.15)", size: "550px", top: "0px",    left: "-100px",  anim: "orb-c", delay: "-5s" },
+          { color: "rgba(239, 203, 109,0.15)", size: "550px", top: "0px",    left: "-100px",  anim: "orb-c", delay: "-5s" },
           { color: "rgba(220,160,40,0.12)",  size: "400px", bottom: "50px", right: "-80px", anim: "orb-a", delay: "-9s" },
         ]} />
         <div className="relative z-10 mx-auto max-w-7xl px-5 py-14 sm:px-6 lg:px-10 lg:py-20">
         <div className="anim mb-8">
-          <p className="text-sm uppercase tracking-[0.28em] text-[#f4cf36]">
+          <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">
             Portfolio
           </p>
           <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
@@ -736,7 +736,7 @@ export default function RealEstateMediaLandingPage() {
           {portfolioItems.map((item, i) => (
             <div
               key={item.title}
-              className="anim card-lift overflow-hidden rounded-[30px] border border-[#f4cf36]/20 bg-[#14110a]"
+              className="anim card-lift overflow-hidden rounded-[30px] border border-[#efcb6d]/20 bg-[#1a1a1a]"
               data-delay={String((i % 4) * 90)}
             >
               <div className="relative mx-auto w-full max-w-[320px] p-4">
@@ -749,7 +749,7 @@ export default function RealEstateMediaLandingPage() {
                   playsInline
                   preload="metadata"
                 />
-                <div className="absolute left-4 top-4 rounded-full border border-[#f4cf36]/25 bg-[#120e09]/95 px-3 py-1.5 text-[9px] uppercase tracking-[0.20em] text-white sm:left-8 sm:top-8 sm:px-4 sm:py-2 sm:text-[10px]">
+                <div className="absolute left-4 top-4 rounded-full border border-[#efcb6d]/25 bg-[#1a1a1a]/95 px-3 py-1.5 text-[9px] uppercase tracking-[0.20em] text-white sm:left-8 sm:top-8 sm:px-4 sm:py-2 sm:text-[10px]">
                   {item.type}
                 </div>
               </div>
@@ -766,14 +766,14 @@ export default function RealEstateMediaLandingPage() {
       </section>
 
       {/* ── Process ── */}
-      <section className="relative overflow-hidden border-y border-[#f4cf36]/20 bg-[#0c0905]">
+      <section className="relative overflow-hidden border-y border-[#efcb6d]/20 bg-[#151515]">
         <AnimatedBg orbs={[
-          { color: "rgba(244,207,54,0.16)", size: "480px", top: "-80px",  right: "5%",    anim: "orb-a", delay: "-2s" },
-          { color: "rgba(180,110,20,0.12)",  size: "360px", bottom: "-40px", left: "-60px", anim: "orb-b", delay: "-6s" },
+          { color: "rgba(239, 203, 109,0.16)", size: "480px", top: "-80px",  right: "5%",    anim: "orb-a", delay: "-2s" },
+          { color: "rgba(120, 95, 50,0.12)",  size: "360px", bottom: "-40px", left: "-60px", anim: "orb-b", delay: "-6s" },
         ]} />
         <div className="relative z-10 mx-auto max-w-7xl px-5 py-14 sm:px-6 lg:px-10 lg:py-20">
           <div className="anim mb-8">
-            <p className="text-sm uppercase tracking-[0.28em] text-[#f4cf36]">
+            <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">
               Process
             </p>
             <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
@@ -785,7 +785,7 @@ export default function RealEstateMediaLandingPage() {
             {process.map((item, i) => (
               <div
                 key={item.step}
-                className="anim card-lift rounded-[28px] border border-[#f4cf36]/20 bg-[#120e09] p-6"
+                className="anim card-lift rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6"
                 data-delay={String(i * 90)}
               >
                 <p className="text-sm text-white/60">Step {item.step}</p>
@@ -802,15 +802,15 @@ export default function RealEstateMediaLandingPage() {
       </section>
 
       {/* ── Packages ── */}
-      <section id="packages" className="relative overflow-hidden border-y border-[#f4cf36]/20 bg-[#050505]">
+      <section id="packages" className="relative overflow-hidden border-y border-[#efcb6d]/20 bg-[#0a0a0a]">
         <AnimatedBg orbs={[
-          { color: "rgba(244,207,54,0.22)", size: "620px", top: "-140px", left: "-100px",  anim: "orb-b", delay: "-1s" },
+          { color: "rgba(239, 203, 109,0.22)", size: "620px", top: "-140px", left: "-100px",  anim: "orb-b", delay: "-1s" },
           { color: "rgba(200,130,20,0.16)",  size: "500px", top: "30%",  right: "-120px",  anim: "orb-a", delay: "-5s" },
-          { color: "rgba(244,207,54,0.10)",  size: "350px", bottom: "-80px", left: "35%",  anim: "orb-c", delay: "-10s" },
+          { color: "rgba(239, 203, 109,0.10)",  size: "350px", bottom: "-80px", left: "35%",  anim: "orb-c", delay: "-10s" },
         ]} />
         <div className="relative z-10 mx-auto max-w-7xl px-5 py-14 sm:px-6 lg:px-10 lg:py-20">
           <div className="anim mb-8">
-            <p className="text-sm uppercase tracking-[0.28em] text-[#f4cf36]">
+            <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">
               Packages
             </p>
             <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
@@ -824,13 +824,13 @@ export default function RealEstateMediaLandingPage() {
                 key={pkg.name}
                 className={`anim card-lift rounded-[28px] border p-5 lg:p-7 ${
                   pkg.featured
-                    ? "border-[#f4cf36]/45 bg-[#1a140b]"
-                    : "border-[#f4cf36]/20 bg-[#14110a]"
+                    ? "border-[#efcb6d]/45 bg-[#1f1f1f]"
+                    : "border-[#efcb6d]/20 bg-[#1a1a1a]"
                 }`}
                 data-delay={String((i % 4) * 80)}
               >
                 {pkg.featured && (
-                  <div className="mb-4 inline-flex rounded-full border border-[#f4cf36]/30 bg-[#f4cf36] px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-black">
+                  <div className="mb-4 inline-flex rounded-full border border-[#efcb6d]/30 bg-[#efcb6d] px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-black">
                     Most Popular
                   </div>
                 )}
@@ -840,7 +840,7 @@ export default function RealEstateMediaLandingPage() {
                 <p className="mt-2 text-sm leading-6 text-white/75">
                   {pkg.subtitle}
                 </p>
-                <div className="mt-5 border-y border-[#f4cf36]/15 py-5">
+                <div className="mt-5 border-y border-[#efcb6d]/15 py-5">
                   <p className="text-4xl font-semibold tracking-tight text-white lg:text-5xl">
                     {pkg.price}
                   </p>
@@ -852,18 +852,18 @@ export default function RealEstateMediaLandingPage() {
                   {pkg.includes.map((item) => (
                     <div
                       key={item}
-                      className="rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3 text-sm text-white/85"
+                      className="rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3 text-sm text-white/85"
                     >
                       {item}
                     </div>
                   ))}
                 </div>
-                <div className="mt-5 rounded-2xl bg-[#f4cf36]/12 px-4 py-3 text-sm font-medium text-white/85">
+                <div className="mt-5 rounded-2xl bg-[#efcb6d]/12 px-4 py-3 text-sm font-medium text-white/85">
                   {pkg.addOn}
                 </div>
                 <a
                   href={pkg.price === "Custom" ? "#contact" : `/checkout?package=${pkg.name.toLowerCase()}`}
-                  className="btn-press mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#f4cf36] px-5 py-3.5 text-sm font-semibold text-black"
+                  className="btn-press mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#efcb6d] px-5 py-3.5 text-sm font-semibold text-black"
                 >
                   {pkg.price === "Custom" ? "Get a Quote" : "Book Now"}
                   <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -875,16 +875,16 @@ export default function RealEstateMediaLandingPage() {
       </section>
 
       {/* ── Add-Ons ── */}
-      <section className="border-b border-[#e7dcc0] bg-white">
+      <section className="border-b border-[#292929] bg-[#0f0f0f]">
         <div className="mx-auto max-w-7xl px-5 py-12 sm:px-6 lg:px-10 lg:py-16">
           <div className="anim mb-8">
-            <p className="text-sm uppercase tracking-[0.28em] text-[#d4af37]">
+            <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">
               A La Carte Add-Ons
             </p>
-            <h2 className="mt-4 text-2xl font-semibold text-black sm:text-3xl lg:text-4xl">
+            <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
               Customize your package with extra services.
             </h2>
-            <p className="mt-4 max-w-2xl leading-7 text-black/60">
+            <p className="mt-4 max-w-2xl leading-7 text-white/60">
               Flexible upgrades for listings that need more coverage, more
               polish, or more branded content.
             </p>
@@ -894,19 +894,19 @@ export default function RealEstateMediaLandingPage() {
             {addOns.map((item, i) => (
               <div
                 key={item.name}
-                className="anim card-lift rounded-[24px] border border-[#eadfbf] bg-[#fffaf0] p-5"
+                className="anim card-lift rounded-[24px] border border-[#292929] bg-[#1a1a1a] p-5"
                 data-delay={String((i % 3) * 80)}
               >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                   <div>
-                    <h3 className="text-base font-semibold text-black sm:text-lg">
+                    <h3 className="text-base font-semibold text-white sm:text-lg">
                       {item.name}
                     </h3>
-                    <p className="mt-2 text-sm leading-6 text-black/60">
+                    <p className="mt-2 text-sm leading-6 text-white/60">
                       {item.detail}
                     </p>
                   </div>
-                  <div className="rounded-full bg-[#d4af37] px-3 py-1 text-sm font-semibold text-black">
+                  <div className="rounded-full bg-[#efcb6d] px-3 py-1 text-sm font-semibold text-black">
                     {item.price}
                   </div>
                 </div>
@@ -917,14 +917,14 @@ export default function RealEstateMediaLandingPage() {
       </section>
 
       {/* ── Contact ── */}
-      <section id="contact" className="relative overflow-hidden border-t border-[#f4cf36]/20 bg-[#0c0905]">
+      <section id="contact" className="relative overflow-hidden border-t border-[#efcb6d]/20 bg-[#151515]">
         <AnimatedBg orbs={[
-          { color: "rgba(244,207,54,0.16)", size: "520px", top: "-60px",  right: "-80px", anim: "orb-c", delay: "-4s" },
-          { color: "rgba(180,110,20,0.12)",  size: "400px", bottom: "0px", left: "-60px", anim: "orb-b", delay: "-8s" },
+          { color: "rgba(239, 203, 109,0.16)", size: "520px", top: "-60px",  right: "-80px", anim: "orb-c", delay: "-4s" },
+          { color: "rgba(120, 95, 50,0.12)",  size: "400px", bottom: "0px", left: "-60px", anim: "orb-b", delay: "-8s" },
         ]} />
         <div className="relative z-10 mx-auto max-w-7xl px-5 py-14 sm:px-6 lg:px-10 lg:py-20">
           <div className="anim mb-10 max-w-3xl">
-            <p className="text-sm uppercase tracking-[0.28em] text-[#f4cf36]">
+            <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">
               Booking
             </p>
             <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
@@ -941,7 +941,7 @@ export default function RealEstateMediaLandingPage() {
               action="mailto:contact@mavncreative.com"
               method="POST"
               encType="text/plain"
-              className="rounded-[28px] border border-[#f4cf36]/20 bg-[#14110a] p-5 lg:p-8"
+              className="rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-5 lg:p-8"
             >
               <div className="grid gap-5 md:grid-cols-2">
                 <div>
@@ -956,7 +956,7 @@ export default function RealEstateMediaLandingPage() {
                       setBookingData({ ...bookingData, fullName: e.target.value })
                     }
                     placeholder="Your full name"
-                    className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#f4cf36]/50"
+                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
                   />
                 </div>
                 <div>
@@ -971,7 +971,7 @@ export default function RealEstateMediaLandingPage() {
                       setBookingData({ ...bookingData, email: e.target.value })
                     }
                     placeholder="you@example.com"
-                    className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#f4cf36]/50"
+                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
                   />
                 </div>
                 <div>
@@ -986,7 +986,7 @@ export default function RealEstateMediaLandingPage() {
                       setBookingData({ ...bookingData, phone: e.target.value })
                     }
                     placeholder="(555) 555-5555"
-                    className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#f4cf36]/50"
+                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
                   />
                 </div>
                 <div>
@@ -1004,7 +1004,7 @@ export default function RealEstateMediaLandingPage() {
                       })
                     }
                     placeholder="City, State"
-                    className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#f4cf36]/50"
+                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
                   />
                 </div>
                 <div className="md:col-span-2">
@@ -1020,7 +1020,7 @@ export default function RealEstateMediaLandingPage() {
                         serviceNeeded: e.target.value,
                       })
                     }
-                    className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3.5 text-white outline-none transition focus:border-[#f4cf36]/50"
+                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white outline-none transition focus:border-[#efcb6d]/50"
                   >
                     <option>Cinematic Listing Video</option>
                     <option>Agent Branding Video</option>
@@ -1045,7 +1045,7 @@ export default function RealEstateMediaLandingPage() {
                       })
                     }
                     placeholder="123 Main Street"
-                    className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#f4cf36]/50"
+                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
                   />
                 </div>
                 <div>
@@ -1063,7 +1063,7 @@ export default function RealEstateMediaLandingPage() {
                       })
                     }
                     placeholder="City"
-                    className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#f4cf36]/50"
+                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
                   />
                 </div>
                 <div>
@@ -1081,7 +1081,7 @@ export default function RealEstateMediaLandingPage() {
                       })
                     }
                     placeholder="State"
-                    className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#f4cf36]/50"
+                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
                   />
                 </div>
                 <div>
@@ -1099,7 +1099,7 @@ export default function RealEstateMediaLandingPage() {
                       })
                     }
                     placeholder="e.g. 2,400"
-                    className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#f4cf36]/50"
+                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
                   />
                 </div>
                 <div>
@@ -1114,7 +1114,7 @@ export default function RealEstateMediaLandingPage() {
                       setBookingData({ ...bookingData, bedBath: e.target.value })
                     }
                     placeholder="4 bed / 3 bath"
-                    className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#f4cf36]/50"
+                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
                   />
                 </div>
                 <div>
@@ -1131,7 +1131,7 @@ export default function RealEstateMediaLandingPage() {
                         preferredShootDate: e.target.value,
                       })
                     }
-                    className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3.5 text-white outline-none transition focus:border-[#f4cf36]/50"
+                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white outline-none transition focus:border-[#efcb6d]/50"
                   />
                 </div>
                 <div>
@@ -1149,7 +1149,7 @@ export default function RealEstateMediaLandingPage() {
                       })
                     }
                     placeholder="Coming soon, active, vacant, etc."
-                    className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#f4cf36]/50"
+                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
                   />
                 </div>
                 <div className="md:col-span-2">
@@ -1167,7 +1167,7 @@ export default function RealEstateMediaLandingPage() {
                       })
                     }
                     placeholder="Tell us about the property, timeline, access details, or anything else we should know."
-                    className="w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#f4cf36]/50"
+                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
                   />
                 </div>
               </div>
@@ -1178,7 +1178,7 @@ export default function RealEstateMediaLandingPage() {
                 </p>
                 <button
                   type="submit"
-                  className="btn-press rounded-2xl bg-[#f4cf36] px-6 py-3 text-sm font-medium text-black"
+                  className="btn-press rounded-2xl bg-[#efcb6d] px-6 py-3 text-sm font-medium text-black"
                 >
                   Send Booking Request
                 </button>
@@ -1186,29 +1186,29 @@ export default function RealEstateMediaLandingPage() {
             </form>
 
             <div className="space-y-4">
-              <div className="card-lift rounded-[28px] border border-[#f4cf36]/20 bg-[#120e09] p-6">
+              <div className="card-lift rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6">
                 <p className="text-sm uppercase tracking-[0.18em] text-white/60">
                   Email
                 </p>
                 <a
                   href="mailto:contact@mavncreative.com"
-                  className="mt-3 block text-lg font-medium text-white transition hover:text-[#f4cf36]"
+                  className="mt-3 block text-lg font-medium text-white transition hover:text-[#efcb6d]"
                 >
                   contact@mavncreative.com
                 </a>
               </div>
-              <div className="card-lift rounded-[28px] border border-[#f4cf36]/20 bg-[#120e09] p-6">
+              <div className="card-lift rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6">
                 <p className="text-sm uppercase tracking-[0.18em] text-white/60">
                   Phone
                 </p>
                 <a
                   href="tel:6124883825"
-                  className="mt-3 block text-lg font-medium text-white transition hover:text-[#f4cf36]"
+                  className="mt-3 block text-lg font-medium text-white transition hover:text-[#efcb6d]"
                 >
                   (612) 488-3825
                 </a>
               </div>
-              <div className="card-lift rounded-[28px] border border-[#f4cf36]/20 bg-[#120e09] p-6">
+              <div className="card-lift rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6">
                 <p className="text-sm uppercase tracking-[0.18em] text-white/60">
                   Launch Note
                 </p>
@@ -1217,7 +1217,7 @@ export default function RealEstateMediaLandingPage() {
                   project details here and we'll confirm the booking manually.
                 </p>
               </div>
-              <div className="card-lift rounded-[28px] border border-[#f4cf36]/20 bg-[#120e09] p-6">
+              <div className="card-lift rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6">
                 <p className="text-sm uppercase tracking-[0.18em] text-white/60">
                   What Happens Next
                 </p>

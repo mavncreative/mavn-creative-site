@@ -57,7 +57,7 @@ html {
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   background-color: rgba(0, 0, 0, 0.88) !important;
-  box-shadow: 0 1px 0 rgba(244, 207, 54, 0.12);
+  box-shadow: 0 1px 0 rgba(239, 203, 109, 0.12);
 }
 
 /* ── Nav link underline slide ── */
@@ -74,7 +74,7 @@ html {
   left: 0;
   width: 0;
   height: 1.5px;
-  background: #f4cf36;
+  background: #efcb6d;
   transition: width 0.25s ease;
 }
 
@@ -106,7 +106,7 @@ html {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background: #0f0c08;
+  background: #151515;
   color: rgba(255, 255, 255, 0.5);
   font-size: 13px;
   text-align: center;

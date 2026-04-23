@@ -108,18 +108,18 @@ function buildEmailHtml(data: {
 
         <!-- Header -->
         <tr>
-          <td style="background:#000;border-radius:16px 16px 0 0;padding:28px 32px;border-bottom:1px solid rgba(244,207,54,0.2)">
-            <p style="margin:0;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:#f4cf36">MAVN Creative</p>
+          <td style="background:#000;border-radius:16px 16px 0 0;padding:28px 32px;border-bottom:1px solid rgba(239, 203, 109,0.2)">
+            <p style="margin:0;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:#efcb6d">MAVN Creative</p>
             <h1 style="margin:6px 0 0;font-size:22px;font-weight:600;color:#fff">New Booking Received</h1>
           </td>
         </tr>
 
         <!-- Badge -->
         <tr>
-          <td style="background:#0f0c08;padding:20px 32px;border-bottom:1px solid rgba(244,207,54,0.12)">
+          <td style="background:#151515;padding:20px 32px;border-bottom:1px solid rgba(239, 203, 109,0.12)">
             <table cellpadding="0" cellspacing="0">
               <tr>
-                <td style="background:#f4cf36;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:700;color:#000;letter-spacing:0.08em">
+                <td style="background:#efcb6d;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:700;color:#000;letter-spacing:0.08em">
                   ✓ PAYMENT CONFIRMED
                 </td>
                 <td style="padding-left:12px;font-size:20px;font-weight:700;color:#fff">${data.amount}</td>
@@ -130,12 +130,12 @@ function buildEmailHtml(data: {
 
         <!-- Details -->
         <tr>
-          <td style="background:#0f0c08;padding:8px 32px 24px;border-radius:0 0 16px 16px">
+          <td style="background:#151515;padding:8px 32px 24px;border-radius:0 0 16px 16px">
             <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid rgba(255,255,255,0.06);margin-top:16px">
               ${row("Package", data.packageLabel)}
               ${row("Customer", data.customerName)}
-              ${row("Email", `<a href="mailto:${data.customerEmail}" style="color:#f4cf36">${data.customerEmail}</a>`)}
-              ${row("Phone", data.phone ? `<a href="tel:${data.phone}" style="color:#f4cf36">${data.phone}</a>` : undefined)}
+              ${row("Email", `<a href="mailto:${data.customerEmail}" style="color:#efcb6d">${data.customerEmail}</a>`)}
+              ${row("Phone", data.phone ? `<a href="tel:${data.phone}" style="color:#efcb6d">${data.phone}</a>` : undefined)}
               ${row("Property", data.propertyAddress)}
               ${row("Shoot Date", data.shootDate)}
               ${data.notes ? row("Notes", `<span style="white-space:pre-wrap">${data.notes}</span>`) : ""}
@@ -143,7 +143,7 @@ function buildEmailHtml(data: {
 
             <div style="margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.06)">
               <p style="margin:0;font-size:12px;color:#555">Stripe session: <span style="color:#777;font-family:monospace">${data.sessionId}</span></p>
-              <p style="margin:6px 0 0;font-size:12px;color:#555">View in Stripe → <a href="https://dashboard.stripe.com/payments" style="color:#f4cf36">dashboard.stripe.com</a></p>
+              <p style="margin:6px 0 0;font-size:12px;color:#555">View in Stripe → <a href="https://dashboard.stripe.com/payments" style="color:#efcb6d">dashboard.stripe.com</a></p>
             </div>
           </td>
         </tr>

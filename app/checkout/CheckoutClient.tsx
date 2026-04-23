@@ -97,18 +97,18 @@ export default function CheckoutClient() {
   }
 
   const inputClass =
-    "w-full rounded-2xl border border-[#f4cf36]/15 bg-[#0f0c08] px-4 py-3 text-white placeholder:text-white/30 outline-none transition focus:border-[#f4cf36]/50";
+    "w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50";
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white">
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-[#f4cf36]/20 bg-black/90 backdrop-blur-md">
+      <header className="sticky top-0 z-50 border-b border-[#efcb6d]/20 bg-black/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
           <a href="/" className="flex items-center gap-3">
             <img src="/logo.png" alt="MAVN Creative" className="h-10 w-auto rounded-md object-contain" />
             <div>
               <p className="text-sm font-semibold tracking-[0.18em] text-white">MAVN Creative</p>
-              <p className="text-xs tracking-[0.28em] text-[#f4cf36]">REAL ESTATE MEDIA</p>
+              <p className="text-xs tracking-[0.28em] text-[#efcb6d]">REAL ESTATE MEDIA</p>
             </div>
           </a>
           <a href="/#packages" className="text-sm text-white/60 transition hover:text-white">
@@ -119,7 +119,7 @@ export default function CheckoutClient() {
 
       <div className="mx-auto max-w-6xl px-6 py-16 lg:px-10">
         <div className="mb-10">
-          <p className="text-sm uppercase tracking-[0.28em] text-[#f4cf36]">Checkout</p>
+          <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">Checkout</p>
           <h1 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">
             Book your shoot
           </h1>
@@ -130,12 +130,12 @@ export default function CheckoutClient() {
 
         <div className="grid gap-10 lg:grid-cols-[1fr_380px]">
           {/* Form */}
-          <form onSubmit={handleSubmit} className="rounded-[32px] border border-[#f4cf36]/20 bg-[#14110a] p-6 lg:p-8">
+          <form onSubmit={handleSubmit} className="rounded-[32px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6 lg:p-8">
             <h2 className="mb-6 text-lg font-semibold text-white">Your details</h2>
             <div className="grid gap-5 md:grid-cols-2">
               <div>
                 <label className="mb-2 block text-sm font-medium text-white">
-                  Full Name <span className="text-[#f4cf36]">*</span>
+                  Full Name <span className="text-[#efcb6d]">*</span>
                 </label>
                 <input
                   type="text"
@@ -148,7 +148,7 @@ export default function CheckoutClient() {
               </div>
               <div>
                 <label className="mb-2 block text-sm font-medium text-white">
-                  Email Address <span className="text-[#f4cf36]">*</span>
+                  Email Address <span className="text-[#efcb6d]">*</span>
                 </label>
                 <input
                   type="email"
@@ -213,7 +213,7 @@ export default function CheckoutClient() {
               <button
                 type="submit"
                 disabled={loading}
-                className="btn-press flex-shrink-0 rounded-2xl bg-[#f4cf36] px-8 py-3.5 text-sm font-semibold text-black disabled:opacity-60"
+                className="btn-press flex-shrink-0 rounded-2xl bg-[#efcb6d] px-8 py-3.5 text-sm font-semibold text-black disabled:opacity-60"
               >
                 {loading ? "Redirecting…" : "Proceed to Payment →"}
               </button>
@@ -225,25 +225,25 @@ export default function CheckoutClient() {
             <div
               className={`rounded-[28px] border p-6 ${
                 "featured" in pkg && pkg.featured
-                  ? "border-[#f4cf36]/45 bg-[#1a140b]"
-                  : "border-[#f4cf36]/20 bg-[#14110a]"
+                  ? "border-[#efcb6d]/45 bg-[#1f1f1f]"
+                  : "border-[#efcb6d]/20 bg-[#1a1a1a]"
               }`}
             >
               {"featured" in pkg && pkg.featured && (
-                <div className="mb-4 inline-flex rounded-full border border-[#f4cf36]/30 bg-[#f4cf36] px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-black">
+                <div className="mb-4 inline-flex rounded-full border border-[#efcb6d]/30 bg-[#efcb6d] px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-black">
                   Most Popular
                 </div>
               )}
               <h3 className="text-2xl font-semibold text-white">{pkg.name}</h3>
               <p className="mt-1 text-sm text-white/60">{pkg.subtitle}</p>
-              <div className="my-5 border-y border-[#f4cf36]/15 py-5">
+              <div className="my-5 border-y border-[#efcb6d]/15 py-5">
                 <p className="text-5xl font-semibold tracking-tight text-white">{pkg.price}</p>
                 <p className="mt-1 text-sm text-white/50">per property</p>
               </div>
               <ul className="space-y-2.5">
                 {pkg.features.map((f) => (
                   <li key={f} className="flex items-start gap-2.5 text-sm text-white/80">
-                    <span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-[#f4cf36] text-[10px] font-bold text-black">
+                    <span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-[#efcb6d] text-[10px] font-bold text-black">
                       ✓
                     </span>
                     {f}
@@ -252,25 +252,25 @@ export default function CheckoutClient() {
               </ul>
             </div>
 
-            <div className="rounded-[24px] border border-[#f4cf36]/20 bg-[#120e09] p-5">
+            <div className="rounded-[24px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-5">
               <p className="text-xs font-medium uppercase tracking-[0.18em] text-white/50">
                 Questions?
               </p>
               <a
                 href="mailto:contact@mavncreative.com"
-                className="mt-2 block text-sm font-medium text-white transition hover:text-[#f4cf36]"
+                className="mt-2 block text-sm font-medium text-white transition hover:text-[#efcb6d]"
               >
                 contact@mavncreative.com
               </a>
               <a
                 href="tel:6124883825"
-                className="mt-1 block text-sm text-white/70 transition hover:text-[#f4cf36]"
+                className="mt-1 block text-sm text-white/70 transition hover:text-[#efcb6d]"
               >
                 (612) 488-3825
               </a>
             </div>
 
-            <div className="rounded-[24px] border border-[#f4cf36]/20 bg-[#120e09] p-5">
+            <div className="rounded-[24px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-5">
               <p className="text-xs font-medium uppercase tracking-[0.18em] text-white/50">
                 Secure payment
               </p>
