@@ -444,91 +444,131 @@ export default function RealEstateMediaLandingPage() {
         </div>
       </header>
 
-      {/* ── Hero ── */}
-      <section className="relative overflow-hidden bg-black">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(244,207,54,0.14),transparent_40%)]" />
+      {/* ── Hero — full-screen cinematic video background ── */}
+      <section className="relative flex min-h-screen items-center overflow-hidden bg-black">
+
+        {/* Background video with Ken Burns zoom */}
+        <div className="absolute inset-0">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="ken-burns absolute inset-0 h-full w-full object-cover"
+            style={{ filter: "brightness(0.38) saturate(1.1)" }}
+          >
+            <source
+              src="https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Rosemount%20v2.mp4"
+              type="video/mp4"
+            />
+          </video>
+        </div>
+
+        {/* Layered cinematic overlays */}
+        {/* Vignette — darkens edges */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_50%,transparent_30%,rgba(0,0,0,0.70)_100%)]" />
+        {/* Bottom fade into next section */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black to-transparent" />
+        {/* Left reading gradient */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-2/3 bg-gradient-to-r from-black/60 to-transparent" />
+        {/* Top fade from nav */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/50 to-transparent" />
+        {/* Gold accent line at top */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#f4cf36]/50 to-transparent" />
+
+        {/* Subtle animated orbs behind content */}
         <AnimatedBg orbs={[
-          { color: "rgba(244,207,54,0.22)", size: "600px", top: "-180px", left: "-120px",  anim: "orb-a", delay: "0s" },
-          { color: "rgba(200,140,30,0.16)",  size: "500px", top: "60px",  right: "-150px", anim: "orb-b", delay: "-4s" },
-          { color: "rgba(244,207,54,0.10)",  size: "380px", bottom: "0px", left: "30%",    anim: "orb-c", delay: "-8s" },
+          { color: "rgba(244,207,54,0.10)", size: "700px", top: "-180px", right: "-60px",   anim: "orb-a", delay: "0s"  },
+          { color: "rgba(200,140,30,0.08)",  size: "500px", bottom: "-80px", left: "-60px", anim: "orb-b", delay: "-7s" },
         ]} />
-        <div className="mx-auto grid max-w-7xl gap-14 px-6 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:px-10 lg:py-28">
-          <div className="relative z-10 anim in">
-            <div className="mb-6 flex items-center gap-4">
-              <img
-                src={logoSrc}
-                alt="MAVN Creative brand mark"
-                className="h-16 w-auto object-contain sm:h-20"
-              />
-              <p className="text-sm uppercase tracking-[0.32em] text-white/80">
-                Minnesota Based Real Estate Media Company
+
+        {/* Content */}
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-28 pt-32 lg:px-10 lg:pt-40 lg:pb-36">
+          <div className="max-w-3xl">
+
+            {/* Logo + eyebrow */}
+            <div
+              className="hero-line mb-7 flex items-center gap-3"
+              style={{ animationDelay: "0.1s" }}
+            >
+              <img src={logoSrc} alt="MAVN Creative" className="h-10 w-auto object-contain" />
+              <span className="h-4 w-px bg-white/25" />
+              <p className="text-xs uppercase tracking-[0.36em] text-[#f4cf36]">
+                Minnesota Real Estate Media
               </p>
             </div>
 
-            <h1 className="mt-5 max-w-3xl text-3xl font-semibold leading-[1.08] text-white sm:text-4xl lg:text-5xl">
-              Cinematic real estate content that helps agents stand out.
+            {/* Main headline — lines staggered */}
+            <h1 className="text-[2.6rem] font-semibold leading-[1.06] text-white sm:text-5xl lg:text-[5rem] lg:leading-[1.04]">
+              <span className="hero-line block" style={{ animationDelay: "0.22s" }}>
+                Cinematic real estate
+              </span>
+              <span className="hero-line block" style={{ animationDelay: "0.36s" }}>
+                content that helps
+              </span>
+              <span className="hero-line block text-[#f4cf36]" style={{ animationDelay: "0.50s" }}>
+                agents stand out.
+              </span>
             </h1>
 
-            <p className="mt-6 max-w-2xl text-base leading-7 text-white/80 sm:text-lg">
-              We create cinematic listings, agent branding videos, HDR
-              photography, and social-first content that helps real estate
-              professionals show up at a higher level across Instagram,
-              Facebook, and beyond.
+            {/* Subtext */}
+            <p
+              className="hero-line mt-7 max-w-xl text-base leading-7 text-white/70 sm:text-lg"
+              style={{ animationDelay: "0.65s" }}
+            >
+              Listing films, agent branding reels, HDR photography, and
+              social-first content — built for real estate professionals
+              who want to market at a higher level.
             </p>
 
-            <div className="mt-8 grid max-w-2xl gap-4">
-              {featurePoints.map((point) => (
-                <div
-                  key={point}
-                  className="flex items-start gap-3 text-sm leading-6 text-white/85"
-                >
-                  <FeatureIcon />
-                  <p>{point}</p>
+            {/* CTAs */}
+            <div
+              className="hero-line mt-10 flex flex-wrap gap-4"
+              style={{ animationDelay: "0.80s" }}
+            >
+              <a
+                href="#portfolio"
+                className="btn-press rounded-2xl bg-[#f4cf36] px-7 py-3.5 text-sm font-semibold text-black"
+              >
+                View Our Work
+              </a>
+              <a
+                href="#packages"
+                className="btn-press rounded-2xl border border-white/20 bg-white/10 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/15"
+              >
+                See Packages
+              </a>
+            </div>
+
+            {/* Stat row */}
+            <div
+              className="hero-line mt-14 flex flex-wrap gap-10 border-t border-white/10 pt-10"
+              style={{ animationDelay: "0.95s" }}
+            >
+              {proofStats.map((stat) => (
+                <div key={stat.label}>
+                  <p className="text-2xl font-semibold text-white">{stat.value}</p>
+                  <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-white/50">
+                    {stat.label}
+                  </p>
                 </div>
               ))}
             </div>
-
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-              <a
-                href="#portfolio"
-                className="btn-press rounded-2xl bg-[#f4cf36] px-6 py-3 text-sm font-medium text-black"
-              >
-                View Portfolio
-              </a>
-              <a
-                href="#services"
-                className="btn-press rounded-2xl border border-[#f4cf36]/25 bg-[#14110a] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#1d170c]"
-              >
-                Explore Services
-              </a>
-            </div>
           </div>
+        </div>
 
-          <div className="anim in flex justify-center lg:justify-end" style={{ transitionDelay: "150ms" }}>
-            <div className="relative mx-auto">
-              <div className="relative w-[290px] rounded-[3rem] bg-[#0b0b0b] p-[10px] shadow-[0_25px_80px_rgba(0,0,0,0.55)] ring-1 ring-white/10">
-                <div className="absolute left-1/2 top-[10px] z-20 h-[26px] w-[110px] -translate-x-1/2 rounded-b-[18px] bg-black" />
-                <div className="absolute left-[18px] top-[120px] z-20 h-[42px] w-[3px] rounded-full bg-[#2a2a2a]" />
-                <div className="absolute left-[18px] top-[175px] z-20 h-[42px] w-[3px] rounded-full bg-[#2a2a2a]" />
-                <div className="absolute right-[18px] top-[145px] z-20 h-[68px] w-[3px] rounded-full bg-[#2a2a2a]" />
-                <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-black">
-                  <VideoPlayer
-                    src="https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Rosemount%20v2.mp4"
-                    className="aspect-[9/19.5] w-full object-cover"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    controls
-                    preload="metadata"
-                  />
-                  <div className="pointer-events-none absolute left-5 top-5 rounded-full border border-[#f4cf36]/25 bg-[#120e09]/95 px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-white">
-                    Featured Reel
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-2">
+          <p className="text-[9px] uppercase tracking-[0.35em] text-white/35">Scroll</p>
+          <svg
+            className="scroll-bounce text-white/35"
+            width="18" height="18" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" strokeWidth="2"
+            strokeLinecap="round" strokeLinejoin="round"
+          >
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
         </div>
       </section>
 

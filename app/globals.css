@@ -144,3 +144,30 @@ html {
 .orb-a { animation: float-a 12s ease-in-out infinite; }
 .orb-b { animation: float-b 15s ease-in-out infinite; }
 .orb-c { animation: float-c 18s ease-in-out infinite; }
+
+/* ── Hero video Ken Burns slow zoom ── */
+@keyframes ken-burns {
+  from { transform: scale(1)    translateZ(0); }
+  to   { transform: scale(1.10) translateZ(0); }
+}
+.ken-burns {
+  animation: ken-burns 24s ease-out forwards;
+  will-change: transform;
+}
+
+/* ── Hero text reveal ── */
+@keyframes fade-up-hero {
+  from { opacity: 0; transform: translateY(36px); }
+  to   { opacity: 1; transform: translateY(0);     }
+}
+.hero-line {
+  opacity: 0;
+  animation: fade-up-hero 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ── Scroll bounce indicator ── */
+@keyframes bounce-down {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50%       { transform: translateY(7px); opacity: 1; }
+}
+.scroll-bounce { animation: bounce-down 1.8s ease-in-out infinite; }
