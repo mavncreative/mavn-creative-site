@@ -200,33 +200,27 @@ export default function RealEstateMediaLandingPage() {
   const services = [
     {
       title: "Cinematic Listing Videos",
-      description:
-        "Property films that feel premium, modern, and emotionally engaging — designed to help agents market homes at a higher level.",
+      description: "Premium property films built to elevate your listing and stop the scroll.",
     },
     {
       title: "Agent Branding Videos",
-      description:
-        "Content that helps agents build trust, authority, and familiarity online with polished personal brand videos.",
+      description: "Personal brand reels that build trust and make you memorable online.",
     },
     {
       title: "HDR Photography",
-      description:
-        "Clean, sharp, professional interior and exterior photos built for MLS, Zillow, social media, and marketing materials.",
+      description: "Sharp interior and exterior photos ready for MLS, Zillow, and social.",
     },
     {
       title: "Social Media Content",
-      description:
-        "Short-form videos and campaign assets tailored for Facebook, Instagram, reels, teasers, launches, and ongoing growth.",
+      description: "Reels, teasers, and campaign assets built for Instagram and Facebook.",
     },
     {
       title: "Developer & Project Media",
-      description:
-        "High-end visual assets for developments, new builds, and launch campaigns that need consistency and strong presentation.",
+      description: "Visual assets for new builds and developments that demand strong presentation.",
     },
     {
       title: "Creative Strategy",
-      description:
-        "Guidance on hooks, delivery, video concepts, and content structure so your media performs instead of just looking good.",
+      description: "Hooks, concepts, and structure so your content performs — not just looks good.",
     },
   ];
 
@@ -657,22 +651,15 @@ export default function RealEstateMediaLandingPage() {
               About
             </p>
             <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
-              We help real estate brands look more premium and feel more
-              memorable.
+              Premium media for real estate professionals.
             </h2>
           </div>
-          <div className="space-y-5 leading-7 text-white/85">
+          <div className="leading-7 text-white/80">
             <p>
-              MAVN Creative creates visual content for agents, buyers, sellers,
-              and property developers who want more than basic marketing. We
-              focus on cinematic execution, clean presentation, and content that
-              supports visibility across social media and listing campaigns.
-            </p>
-            <p>
-              Our goal is simple: make your brand and your properties feel
-              stronger online. Whether that means a showcase video, an agent
-              reel, a full set of HDR photos, or a more strategic content
-              approach, we help you show up professionally and consistently.
+              We produce cinematic listing videos, agent branding reels, and HDR
+              photography for real estate professionals in Minnesota. Clean
+              execution. Strong visuals. Content that makes your brand and your
+              listings look the part.
             </p>
           </div>
         </div>
@@ -698,9 +685,8 @@ export default function RealEstateMediaLandingPage() {
                 What we do
               </h2>
             </div>
-            <p className="max-w-2xl text-sm leading-6 text-white/75">
-              Built for agents and brands that want stronger content, stronger
-              presentation, and stronger positioning in a crowded market.
+            <p className="max-w-md text-sm leading-6 text-white/65">
+              Six ways we help you show up stronger.
             </p>
           </div>
 
