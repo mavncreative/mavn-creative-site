@@ -150,6 +150,38 @@ function VideoPlayer({
 
 // ── Main page ─────────────────────────────────────────────────────────────────
 export default function RealEstateMediaLandingPage() {
+  const [leadData, setLeadData] = useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    email: "",
+    brokerage: "",
+    lookingFor: "Listing Photography",
+  });
+  const [leadStatus, setLeadStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [leadError, setLeadError] = useState<string>("");
+
+  const submitLead = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLeadStatus("submitting");
+    setLeadError("");
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...leadData, source: "homepage-hero" }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Something went wrong. Please try again.");
+      }
+      setLeadStatus("success");
+    } catch (err) {
+      setLeadStatus("error");
+      setLeadError(err instanceof Error ? err.message : "Something went wrong.");
+    }
+  };
+
   const [bookingData, setBookingData] = useState({
     fullName: "",
     email: "",
@@ -524,76 +556,185 @@ export default function RealEstateMediaLandingPage() {
         ]} />
 
         {/* Content */}
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-20 pt-24 sm:px-6 lg:px-10 lg:pt-40 lg:pb-36">
-          <div className="max-w-3xl">
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-20 pt-24 sm:px-6 lg:px-10 lg:pt-32 lg:pb-28">
+          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
 
-            {/* Logo + eyebrow */}
-            <div
-              className="hero-line mb-7 flex items-center gap-3"
-              style={{ animationDelay: "0.1s" }}
-            >
-              <img src={logoSrc} alt="MAVN Creative" className="h-10 w-auto object-contain" />
-              <span className="h-4 w-px bg-white/25" />
-              <p className="text-xs uppercase tracking-[0.36em] text-[#efcb6d]">
-                Minnesota Real Estate Media
+            {/* Left: copy */}
+            <div>
+              {/* Logo + eyebrow */}
+              <div
+                className="hero-line mb-6 flex items-center gap-3"
+                style={{ animationDelay: "0.1s" }}
+              >
+                <img src={logoSrc} alt="MAVN Creative" className="h-10 w-auto object-contain" />
+                <span className="h-4 w-px bg-white/25" />
+                <p className="text-xs uppercase tracking-[0.36em] text-[#efcb6d]">
+                  Twin Cities Real Estate Media
+                </p>
+              </div>
+
+              {/* Main headline — playbook copy */}
+              <h1 className="text-[2rem] font-semibold leading-[1.05] text-white sm:text-5xl lg:text-[4.25rem] lg:leading-[1.02]">
+                <span className="hero-line block" style={{ animationDelay: "0.22s" }}>
+                  Listings that
+                </span>
+                <span className="hero-line block text-[#efcb6d]" style={{ animationDelay: "0.36s" }}>
+                  stop the scroll.
+                </span>
+              </h1>
+
+              {/* Subtext */}
+              <p
+                className="hero-line mt-5 max-w-xl text-sm leading-7 text-white/75 sm:mt-6 sm:text-base lg:text-lg"
+                style={{ animationDelay: "0.55s" }}
+              >
+                MAVN Creative produces cinematic real estate video and
+                photography for Twin Cities agents who want their listings to
+                stand out. New client discount available — we'll be in touch
+                within the hour.
               </p>
+
+              {/* Secondary links */}
+              <div
+                className="hero-line mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm"
+                style={{ animationDelay: "0.7s" }}
+              >
+                <a href="#portfolio" className="font-semibold text-[#efcb6d] hover:underline">
+                  View our work →
+                </a>
+                <a href="#packages" className="text-white/70 transition hover:text-white">
+                  See packages
+                </a>
+                <a
+                  href="https://instagram.com/mavn.creative"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/70 transition hover:text-white"
+                >
+                  @mavn.creative
+                </a>
+              </div>
+
+              {/* Stat row */}
+              <div
+                className="hero-line mt-10 flex flex-wrap gap-6 border-t border-white/10 pt-8 sm:gap-10"
+                style={{ animationDelay: "0.85s" }}
+              >
+                {proofStats.map((stat) => (
+                  <div key={stat.label}>
+                    <p className="text-2xl font-semibold text-white">{stat.value}</p>
+                    <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-white/50">
+                      {stat.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Main headline — lines staggered */}
-            <h1 className="text-[1.9rem] font-semibold leading-[1.08] text-white sm:text-4xl lg:text-[5rem] lg:leading-[1.04]">
-              <span className="hero-line block" style={{ animationDelay: "0.22s" }}>
-                Cinematic real estate
-              </span>
-              <span className="hero-line block" style={{ animationDelay: "0.36s" }}>
-                content that helps
-              </span>
-              <span className="hero-line block text-[#efcb6d]" style={{ animationDelay: "0.50s" }}>
-                agents stand out.
-              </span>
-            </h1>
-
-            {/* Subtext */}
-            <p
-              className="hero-line mt-5 max-w-xl text-sm leading-7 text-white/70 sm:mt-7 sm:text-base lg:text-lg"
-              style={{ animationDelay: "0.65s" }}
-            >
-              Listing films, agent branding reels, HDR photography, and
-              social-first content — built for real estate professionals
-              who want to market at a higher level.
-            </p>
-
-            {/* CTAs */}
+            {/* Right: lead form */}
             <div
-              className="hero-line mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4"
-              style={{ animationDelay: "0.80s" }}
+              id="lead"
+              className="hero-line rounded-[28px] border border-[#efcb6d]/25 bg-black/55 p-5 shadow-2xl shadow-black/50 backdrop-blur-md sm:p-7"
+              style={{ animationDelay: "0.4s" }}
             >
-              <a
-                href="#portfolio"
-                className="btn-press rounded-2xl bg-[#efcb6d] px-7 py-3.5 text-sm font-semibold text-black"
-              >
-                View Our Work
-              </a>
-              <a
-                href="#packages"
-                className="btn-press rounded-2xl border border-white/20 bg-white/10 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/15"
-              >
-                See Packages
-              </a>
-            </div>
-
-            {/* Stat row */}
-            <div
-              className="hero-line mt-10 flex flex-wrap gap-6 border-t border-white/10 pt-8 sm:mt-14 sm:gap-10 sm:pt-10"
-              style={{ animationDelay: "0.95s" }}
-            >
-              {proofStats.map((stat) => (
-                <div key={stat.label}>
-                  <p className="text-2xl font-semibold text-white">{stat.value}</p>
-                  <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-white/50">
-                    {stat.label}
+              {leadStatus === "success" ? (
+                <div className="flex min-h-[420px] flex-col items-center justify-center text-center">
+                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#efcb6d] text-2xl text-black">
+                    ✓
+                  </div>
+                  <h3 className="text-xl font-semibold text-white">You're in.</h3>
+                  <p className="mt-3 max-w-xs text-sm leading-6 text-white/70">
+                    Thanks, {leadData.firstName}. Adam will reach out within
+                    the hour to lock in the details.
                   </p>
+                  <a
+                    href="#portfolio"
+                    className="btn-press mt-6 rounded-2xl border border-[#efcb6d]/40 bg-white/5 px-5 py-3 text-sm font-semibold text-white"
+                  >
+                    Browse our work while you wait
+                  </a>
                 </div>
-              ))}
+              ) : (
+                <>
+                  <p className="text-xs uppercase tracking-[0.28em] text-[#efcb6d]">
+                    Book a shoot
+                  </p>
+                  <h2 className="mt-2 text-xl font-semibold text-white sm:text-2xl">
+                    Tell us about your listing.
+                  </h2>
+                  <p className="mt-2 text-sm leading-6 text-white/65">
+                    Fill this out and we'll reply within the hour.
+                  </p>
+
+                  <form onSubmit={submitLead} className="mt-5 grid gap-3 sm:grid-cols-2">
+                    <input
+                      required
+                      type="text"
+                      placeholder="First name"
+                      value={leadData.firstName}
+                      onChange={(e) => setLeadData({ ...leadData, firstName: e.target.value })}
+                      className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none transition focus:border-[#efcb6d]/60"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Last name"
+                      value={leadData.lastName}
+                      onChange={(e) => setLeadData({ ...leadData, lastName: e.target.value })}
+                      className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none transition focus:border-[#efcb6d]/60"
+                    />
+                    <input
+                      required
+                      type="tel"
+                      placeholder="Phone number"
+                      value={leadData.phone}
+                      onChange={(e) => setLeadData({ ...leadData, phone: e.target.value })}
+                      className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none transition focus:border-[#efcb6d]/60"
+                    />
+                    <input
+                      required
+                      type="email"
+                      placeholder="Email address"
+                      value={leadData.email}
+                      onChange={(e) => setLeadData({ ...leadData, email: e.target.value })}
+                      className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none transition focus:border-[#efcb6d]/60"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Brokerage"
+                      value={leadData.brokerage}
+                      onChange={(e) => setLeadData({ ...leadData, brokerage: e.target.value })}
+                      className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none transition focus:border-[#efcb6d]/60 sm:col-span-2"
+                    />
+                    <select
+                      value={leadData.lookingFor}
+                      onChange={(e) => setLeadData({ ...leadData, lookingFor: e.target.value })}
+                      className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none transition focus:border-[#efcb6d]/60 sm:col-span-2"
+                    >
+                      <option>Listing Photography</option>
+                      <option>Listing Video / Reel</option>
+                      <option>Agent Branding Video</option>
+                      <option>Monthly Content Retainer</option>
+                      <option>Not Sure Yet</option>
+                    </select>
+
+                    <button
+                      type="submit"
+                      disabled={leadStatus === "submitting"}
+                      className="btn-press mt-1 w-full rounded-2xl bg-[#efcb6d] px-6 py-3.5 text-sm font-semibold text-black disabled:opacity-60 sm:col-span-2"
+                    >
+                      {leadStatus === "submitting" ? "Sending…" : "Get In Touch"}
+                    </button>
+
+                    {leadStatus === "error" && (
+                      <p className="text-xs text-red-400 sm:col-span-2">{leadError}</p>
+                    )}
+
+                    <p className="text-[11px] leading-5 text-white/45 sm:col-span-2">
+                      By submitting you agree to be contacted about your project. No spam.
+                    </p>
+                  </form>
+                </>
+              )}
             </div>
           </div>
         </div>
