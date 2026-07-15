@@ -255,6 +255,60 @@ export default function MavnCreativeSite() {
     },
   ];
 
+  // À la carte / one-time reel pricing (from Agent Branding Packages)
+  const alaCarte = [
+    {
+      name: "Single Reel",
+      subtitle: "One reel, one shoot day",
+      price: "$499",
+      unit: "/ reel",
+      includes: [
+        "1 professionally produced reel",
+        "Done-for-you scripting & creative direction",
+        "Brand discovery call",
+        "Professional color grading",
+        "Licensed music + sound design",
+        "1 round of revisions",
+        "Delivered within 48 hours",
+      ],
+    },
+    {
+      name: "Starter Pack",
+      subtitle: "4 reels · one shoot day",
+      price: "$999",
+      unit: "one-time",
+      badge: "Most Popular",
+      save: "Save $997 vs à la carte",
+      includes: [
+        "4 professionally produced reels",
+        "Done-for-you scripting & creative direction",
+        "Brand discovery session",
+        "~2 hr shoot day — all 4 reels in one session",
+        "Delivered one per week over 4 weeks",
+        "Color grading + licensed music & sound",
+        "2 rounds of revisions",
+      ],
+      featured: true,
+    },
+    {
+      name: "Growth Pack",
+      subtitle: "8 reels · one shoot day",
+      price: "$1,799",
+      unit: "one-time",
+      badge: "Best Value",
+      save: "Save $2,193 vs à la carte",
+      includes: [
+        "8 professionally produced reels",
+        "Done-for-you scripting & creative direction",
+        "Brand discovery session",
+        "Half-day shoot — all 8 reels in one session",
+        "Delivered one per week over 8 weeks",
+        "Color grading + licensed music & sound",
+        "Unlimited revisions · priority turnaround",
+      ],
+    },
+  ];
+
   const videoTypes = [
     {
       tag: "Authority",
@@ -661,6 +715,63 @@ export default function MavnCreativeSite() {
                     </button>
                   </div>
                 ))}
+              </div>
+
+              {/* À la carte / per-reel pricing */}
+              <div className="mt-16">
+                <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">À La Carte</p>
+                <h3 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">
+                  Pay per reel — no commitment.
+                </h3>
+                <p className="mt-3 max-w-2xl leading-7 text-white/70">
+                  Not ready for a monthly plan? Book reels one at a time, or bundle a
+                  shoot day and save. Shoot once, publish every week.
+                </p>
+
+                <div className="mt-8 grid gap-5 lg:grid-cols-3">
+                  {alaCarte.map((item) => (
+                    <div
+                      key={item.name}
+                      className={`card-lift flex flex-col rounded-[28px] border p-6 lg:p-7 ${
+                        item.featured
+                          ? "border-[#efcb6d]/45 bg-[#1f1f1f]"
+                          : "border-[#efcb6d]/20 bg-[#1a1a1a]"
+                      }`}
+                    >
+                      {item.badge && (
+                        <div className="mb-4 inline-flex w-fit rounded-full bg-[#efcb6d] px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-black">
+                          {item.badge}
+                        </div>
+                      )}
+                      <h4 className="text-2xl font-semibold text-white">{item.name}</h4>
+                      <p className="mt-1 text-sm text-white/65">{item.subtitle}</p>
+                      <div className="mt-5 border-y border-[#efcb6d]/15 py-5">
+                        <p className="text-4xl font-semibold tracking-tight text-white lg:text-5xl">
+                          {item.price}
+                          <span className="ml-1 text-sm font-normal text-white/55">{item.unit}</span>
+                        </p>
+                        {item.save && (
+                          <p className="mt-1 text-xs font-medium text-[#efcb6d]">{item.save}</p>
+                        )}
+                      </div>
+                      <div className="mt-6 flex-1 space-y-2.5">
+                        {item.includes.map((inc) => (
+                          <div key={inc} className="flex items-start gap-2.5 text-sm text-white/85">
+                            <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-[#efcb6d]" />
+                            {inc}
+                          </div>
+                        ))}
+                      </div>
+                      <button
+                        onClick={() => goToTab("book")}
+                        className="btn-press mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#efcb6d] px-5 py-3.5 text-sm font-semibold text-black"
+                      >
+                        {item.name === "Single Reel" ? "Book a Reel" : "Get Started"}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Monthly content mix */}
