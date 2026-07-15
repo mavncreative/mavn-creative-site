@@ -2,28 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 
-// ── Scroll-fade hook ──────────────────────────────────────────────────────────
-function useScrollAnimations() {
-  useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>(".anim");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            const el = e.target as HTMLElement;
-            const delay = el.dataset.delay ?? "0";
-            setTimeout(() => el.classList.add("in"), Number(delay));
-            observer.unobserve(el);
-          }
-        });
-      },
-      { threshold: 0.12 }
-    );
-    els.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-}
-
 // ── Animated section background orbs ─────────────────────────────────────────
 function AnimatedBg({
   orbs,
@@ -47,7 +25,7 @@ function AnimatedBg({
       {orbs.map((o, i) => (
         <div
           key={i}
-          className={`orb ${o.anim === "orb-a" ? "orb-a" : o.anim === "orb-b" ? "orb-b" : "orb-c"}`}
+          className={`orb ${o.anim}`}
           style={{
             background: o.color,
             width: o.size,
@@ -68,7 +46,6 @@ function AnimatedBg({
 function VideoPlayer({
   src,
   className,
-  autoPlay,
   muted,
   loop,
   playsInline,
@@ -78,7 +55,6 @@ function VideoPlayer({
 }: {
   src: string;
   className?: string;
-  autoPlay?: boolean;
   muted?: boolean;
   loop?: boolean;
   playsInline?: boolean;
@@ -87,34 +63,10 @@ function VideoPlayer({
   style?: React.CSSProperties;
 }) {
   const [errored, setErrored] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (!autoPlay || !videoRef.current) return;
-    videoRef.current.play().catch(() => {});
-  }, [autoPlay]);
-
-  // MOV files: use video/mp4 type hint so Chrome/Firefox attempt H.264 decode
-  // instead of rejecting on the video/quicktime MIME type from the server.
-  const isMov = src.toLowerCase().includes(".mov");
 
   if (errored) {
     return (
       <div className={`video-fallback ${className ?? ""}`} style={style}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="36"
-          height="36"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{ opacity: 0.4 }}
-        >
-          <polygon points="5 3 19 12 5 21 5 3" />
-        </svg>
         <a
           href={src}
           target="_blank"
@@ -123,16 +75,13 @@ function VideoPlayer({
         >
           Open video ↗
         </a>
-        <span style={{ fontSize: 11, opacity: 0.4 }}>
-          Format not supported in this browser
-        </span>
+        <span style={{ fontSize: 11, opacity: 0.4 }}>Format not supported in this browser</span>
       </div>
     );
   }
 
   return (
     <video
-      ref={videoRef}
       className={className}
       style={style}
       muted={muted}
@@ -142,24 +91,30 @@ function VideoPlayer({
       preload={preload ?? "metadata"}
       onError={() => setErrored(true)}
     >
-      {/* type="video/mp4" lets Chrome/Firefox attempt playback of MOV/H.264 */}
-      <source src={src} type={isMov ? "video/mp4" : "video/mp4"} />
+      <source src={src} type="video/mp4" />
     </video>
   );
 }
 
+type TabId = "branding" | "work" | "packages" | "book";
+
 // ── Main page ─────────────────────────────────────────────────────────────────
-export default function RealEstateMediaLandingPage() {
+export default function MavnCreativeSite() {
+  const [activeTab, setActiveTab] = useState<TabId>("branding");
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  // Lead form → posts to /api/lead (GoHighLevel webhook + Resend backup)
   const [leadData, setLeadData] = useState({
     firstName: "",
     lastName: "",
     phone: "",
     email: "",
     brokerage: "",
-    lookingFor: "Listing Photography",
+    lookingFor: "Monthly Content Package",
   });
   const [leadStatus, setLeadStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
-  const [leadError, setLeadError] = useState<string>("");
+  const [leadError, setLeadError] = useState("");
 
   const submitLead = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -169,7 +124,7 @@ export default function RealEstateMediaLandingPage() {
       const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...leadData, source: "homepage-hero" }),
+        body: JSON.stringify({ ...leadData, source: "homepage-book-tab" }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -182,105 +137,31 @@ export default function RealEstateMediaLandingPage() {
     }
   };
 
-  const [bookingData, setBookingData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    clientLocation: "",
-    serviceNeeded: "Cinematic Listing Video",
-    propertyAddress: "",
-    propertyCity: "",
-    propertyState: "",
-    squareFootage: "",
-    bedBath: "",
-    preferredShootDate: "",
-    listingStatus: "",
-    projectNotes: "",
-  });
-
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
-
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 30);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useScrollAnimations();
+  const goToTab = (tab: TabId) => {
+    setActiveTab(tab);
+    setMobileNavOpen(false);
+    window.scrollTo({ top: 0, behavior: "auto" });
+  };
 
   const logoSrc = "/logo.png";
 
-  const featurePoints = [
-    "Cinematic listing videos built to stop the scroll.",
-    "Agent branding content that makes you look confident and credible on camera.",
-    "HDR photos, reels, and social-first media designed for Instagram and Facebook.",
+  const tabs: Array<{ id: TabId; label: string }> = [
+    { id: "branding", label: "Branding" },
+    { id: "work", label: "Our Work" },
+    { id: "packages", label: "Packages" },
+    { id: "book", label: "Book With Us" },
   ];
-
-  const FeatureIcon = () => (
-    <span className="mt-0.5 inline-flex h-6 w-6 flex-none items-center justify-center rounded-full bg-[#efcb6d] text-xs font-semibold text-black">
-      ✓
-    </span>
-  );
 
   const proofStats = [
     { label: "Listings elevated", value: "50+" },
     { label: "Content built for", value: "Reels + MLS" },
     { label: "Turnaround", value: "Fast & reliable" },
-  ];
-
-  const services = [
-    {
-      title: "Cinematic Listing Videos",
-      description: "Premium property films built to elevate your listing and stop the scroll.",
-    },
-    {
-      title: "Agent Branding Videos",
-      description: "Personal brand reels that build trust and make you memorable online.",
-    },
-    {
-      title: "HDR Photography",
-      description: "Sharp interior and exterior photos ready for MLS, Zillow, and social.",
-    },
-    {
-      title: "Social Media Content",
-      description: "Reels, teasers, and campaign assets built for Instagram and Facebook.",
-    },
-    {
-      title: "Developer & Project Media",
-      description: "Visual assets for new builds and developments that demand strong presentation.",
-    },
-    {
-      title: "Creative Strategy",
-      description: "Hooks, concepts, and structure so your content performs — not just looks good.",
-    },
-  ];
-
-  const process = [
-    {
-      step: "01",
-      title: "Reach Out",
-      description:
-        "Tell us about the listing, your brand, or the kind of content support you need.",
-    },
-    {
-      step: "02",
-      title: "Choose Your Package",
-      description:
-        "We build the right mix of video, photo, and social content based on your goals.",
-    },
-    {
-      step: "03",
-      title: "Shoot Day",
-      description:
-        "We direct, capture, and produce content with a clean cinematic approach.",
-    },
-    {
-      step: "04",
-      title: "Delivery & Posting",
-      description:
-        "Receive polished media that is ready to market, post, and share with confidence.",
-    },
   ];
 
   const portfolioItems = [
@@ -318,112 +199,123 @@ export default function RealEstateMediaLandingPage() {
     },
   ];
 
+  // Monthly agent content packages (from MAVN content package pricing)
   const packages = [
     {
-      name: "Essential",
-      subtitle: "Perfect for standard listings.",
-      price: "$249",
+      tier: "Tier 1 · Creator",
+      name: "Creator",
+      tagline: "Build your presence",
+      price: "$699",
       includes: [
-        "Cinematic listing video (up to 90 sec)",
-        "Interior & exterior walk-through",
-        "Professional color grading",
-        "Licensed background music",
-        "Standard 48-hour turnaround",
-        "1 round of revisions included",
+        "4 strategic videos / month",
+        "1 Social Lead Reel (vertical)",
+        "Done-for-you scripting & creative direction",
+        "Monthly strategy call",
+        "Caption + hashtag strategy",
+        "Up to 2 filming locations",
+        "Vertical-first delivery (Reels, TikTok, Shorts)",
+        "10% off all listing content",
       ],
-      addOn: "Add drone + photos: +$199",
+      note: "Perfect for agents starting out",
     },
     {
+      tier: "Tier 2 · Signature",
       name: "Signature",
-      subtitle: "Our most popular package.",
-      price: "$549",
+      tagline: "Build momentum & authority",
+      price: "$1,149",
       includes: [
-        "Cinematic listing video (up to 2 min)",
-        "FAA-certified drone aerial footage",
-        "Twilight / golden hour exterior shot",
-        "Professional photography (20+ photos)",
-        "Professional color + LUT grading",
-        "Licensed music + sound design",
-        "Standard 48-hour turnaround",
-        "2 rounds of revisions included",
+        "5 strategic videos / month",
+        "2 Social Lead Reels (vertical)",
+        "FAA-certified drone footage included",
+        "Done-for-you scripting & creative direction",
+        "Monthly strategy call + content calendar",
+        "Up to 3 filming locations",
+        "Vertical-first delivery (Reels, TikTok, Shorts)",
+        "15% off all listing content",
       ],
-      addOn: "Add agent promo video: +$199",
+      note: "Most popular for growing agents",
       featured: true,
     },
     {
+      tier: "Tier 3 · Elite",
       name: "Elite",
-      subtitle: "For luxury & premium listings.",
-      price: "$999",
+      tagline: "Dominate your market",
+      price: "$1,499",
       includes: [
-        "Extended cinematic video (3–4 min)",
-        "Full drone package — multiple angles",
-        "Twilight & golden hour sessions",
-        "Agent intro / promo video clip",
-        "Professional photography (35+ photos)",
-        "Standard 48-hour turnaround",
-        "Unlimited revisions",
-        "Dedicated project manager",
+        "6 strategic videos / month",
+        "3 Social Lead Reels (vertical)",
+        "FAA-certified drone footage included",
+        "Dedicated monthly campaign / CTA video",
+        "Done-for-you scripting & creative direction",
+        "Bi-weekly strategy calls",
+        "Up to 3 filming locations",
+        "15% off all listing content",
       ],
-      addOn: "Add virtual tour: +$100",
-    },
-    {
-      name: "Custom",
-      subtitle: "Built for developers, teams, and unique campaign needs.",
-      price: "Custom",
-      includes: [
-        "Multi-property or ongoing content planning",
-        "Tailored video + photo deliverables",
-        "Branding content for agents or teams",
-        "Flexible turnaround based on scope",
-        "Custom creative direction",
-        "Quote built around your exact needs",
-      ],
-      addOn: "Schedule a discovery call for custom pricing",
+      note: "For agents ready to own their market",
     },
   ];
 
-  const addOns = [
+  const videoTypes = [
     {
-      name: "Real Estate Photography",
-      detail: "20 professionally edited photos",
-      price: "$125",
+      tag: "Authority",
+      title: "Education Video",
+      description:
+        "Answers the questions buyers are Googling. Builds trust with cold audiences.",
     },
     {
-      name: "Extra Revision Round",
-      detail: "Beyond included revisions",
-      price: "$50",
+      tag: "Trust",
+      title: "Storytelling Video",
+      description:
+        "Your story, client journeys, behind the scenes. Makes people feel like they know you.",
     },
     {
-      name: "Extended Video",
-      detail: "Add up to 1 minute to any listing video",
-      price: "$75",
+      tag: "Reach",
+      title: "Scroll-Stopper",
+      description:
+        "High-energy, trend-aware content built to spike reach and grow new audiences fast.",
     },
     {
-      name: "Virtual Tour Integration",
-      detail: "Matterport-compatible 360 walkthrough link",
-      price: "$100",
-    },
-    {
-      name: "Agent Bio / Promo Video",
-      detail: "60-sec branded agent introduction clip",
-      price: "$199",
-    },
-    {
-      name: "Twilight Session Only",
-      detail: "Exterior golden hour / dusk shoot",
-      price: "$99",
-    },
-    {
-      name: "Raw Footage Files",
-      detail: "Unedited footage delivered via download",
-      price: "$50",
+      tag: "Local Authority",
+      title: "Community Video",
+      description:
+        "Neighborhood tours, market updates, local lifestyle. Cements you as the local expert.",
     },
   ];
+
+  const leadGenSteps = [
+    {
+      step: "01",
+      title: "Awareness",
+      audience: "Cold Audience",
+      description: "New buyers find you through Reels, TikTok, or YouTube Shorts.",
+    },
+    {
+      step: "02",
+      title: "Interest",
+      audience: "Warm Audience",
+      description: "They follow, binge your content, and feel like they know you.",
+    },
+    {
+      step: "03",
+      title: "Trust",
+      audience: "Hot Audience",
+      description: "After consistent content, you're the expert they trust.",
+    },
+    {
+      step: "04",
+      title: "Lead",
+      audience: "Consultation",
+      description: "When ready to buy, you're the only agent they think to call.",
+    },
+  ];
+
+  const inputClass =
+    "w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none transition focus:border-[#efcb6d]/60";
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
 
-      {/* ── Navigation ── */}
+      {/* ── Header / Tab navigation ── */}
       <header
         className={`sticky top-0 z-50 border-b border-[#efcb6d]/20 bg-black transition-all duration-300 ${
           isScrolled ? "nav-glass" : ""
@@ -431,15 +323,15 @@ export default function RealEstateMediaLandingPage() {
       >
         <div className="mx-auto max-w-7xl px-5 lg:px-10">
 
-          {/* ── Mobile header row ── */}
+          {/* Mobile row */}
           <div className="flex items-center justify-between py-4 md:hidden">
-            <div className="flex items-center gap-3">
+            <button onClick={() => goToTab("branding")} className="flex items-center gap-3">
               <img src={logoSrc} alt="MAVN Creative logo" className="h-9 w-auto object-contain" />
-              <div className="leading-tight">
+              <div className="text-left leading-tight">
                 <p className="text-xs font-semibold tracking-[0.16em] text-white">MAVN Creative</p>
                 <p className="text-[10px] tracking-[0.24em] text-[#efcb6d]">REAL ESTATE MEDIA</p>
               </div>
-            </div>
+            </button>
             <button
               onClick={() => setMobileNavOpen(!mobileNavOpen)}
               aria-label="Toggle navigation"
@@ -453,925 +345,495 @@ export default function RealEstateMediaLandingPage() {
             </button>
           </div>
 
-          {/* ── Mobile dropdown ── */}
+          {/* Mobile dropdown */}
           {mobileNavOpen && (
             <div className="border-t border-white/10 pb-5 md:hidden">
               <nav className="flex flex-col">
-                {[
-                  ["#about", "About"],
-                  ["#services", "Services"],
-                  ["#portfolio", "Portfolio"],
-                  ["#packages", "Packages"],
-                ].map(([href, label]) => (
-                  <a
-                    key={href}
-                    href={href}
-                    onClick={() => setMobileNavOpen(false)}
-                    className="border-b border-white/8 py-3.5 text-sm text-white/80 transition hover:text-white"
+                {tabs.map((t) => (
+                  <button
+                    key={t.id}
+                    onClick={() => goToTab(t.id)}
+                    className={`border-b border-white/8 py-3.5 text-left text-sm transition ${
+                      activeTab === t.id ? "text-[#efcb6d]" : "text-white/80 hover:text-white"
+                    }`}
                   >
-                    {label}
-                  </a>
+                    {t.label}
+                  </button>
                 ))}
               </nav>
               <div className="mt-4 flex flex-col gap-3">
                 <a href="tel:6124883825" className="text-sm text-white/55 transition hover:text-[#efcb6d]">
                   (612) 488-3825
                 </a>
-                <a
-                  href="#contact"
-                  onClick={() => setMobileNavOpen(false)}
-                  className="btn-press rounded-2xl bg-[#efcb6d] px-5 py-3.5 text-center text-sm font-semibold text-black"
-                >
-                  Book a Shoot
-                </a>
               </div>
             </div>
           )}
 
-          {/* ── Desktop nav row ── */}
+          {/* Desktop row */}
           <div className="hidden items-center justify-between py-5 md:flex">
-            <div className="flex items-center gap-4 text-sm text-white">
+            <button onClick={() => goToTab("branding")} className="flex items-center gap-4 text-sm text-white">
               <img src={logoSrc} alt="MAVN Creative logo" className="h-11 w-auto object-contain" />
-              <div>
+              <div className="text-left">
                 <p className="font-semibold tracking-[0.18em] text-white">MAVN Creative</p>
                 <p className="tracking-[0.28em] text-[#efcb6d]">REAL ESTATE MEDIA</p>
               </div>
-            </div>
-            <div className="flex items-center gap-7 text-sm">
-              <a href="#about" className="nav-link">About</a>
-              <a href="#services" className="nav-link">Services</a>
-              <a href="#portfolio" className="nav-link">Portfolio</a>
-              <a href="#packages" className="nav-link">Packages</a>
-            </div>
-            <div className="flex items-center gap-4 text-sm">
-              <a href="tel:6124883825" className="text-white/70 transition hover:text-[#efcb6d]">
-                (612) 488-3825
-              </a>
-              <a href="#contact" className="btn-press rounded-full bg-[#efcb6d] px-5 py-2.5 font-semibold text-black">
-                Book a Shoot
-              </a>
-            </div>
+            </button>
+            <nav className="flex items-center gap-8 text-sm">
+              {tabs.map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => goToTab(t.id)}
+                  className={`relative transition ${
+                    activeTab === t.id ? "text-[#efcb6d]" : "text-white/75 hover:text-white"
+                  }`}
+                >
+                  {t.label}
+                  {activeTab === t.id && (
+                    <span className="absolute -bottom-1.5 left-0 h-[1.5px] w-full bg-[#efcb6d]" />
+                  )}
+                </button>
+              ))}
+            </nav>
+            <a href="tel:6124883825" className="text-sm text-white/70 transition hover:text-[#efcb6d]">
+              (612) 488-3825
+            </a>
           </div>
 
         </div>
       </header>
 
-      {/* ── Hero — full-screen cinematic video background ── */}
-      <section className="relative flex min-h-screen items-center overflow-hidden bg-black">
+      {/* ── Tab panels ── */}
+      <div key={activeTab} style={{ animation: "fade-up-hero 0.5s ease forwards" }}>
 
-        {/* Background video with Ken Burns zoom */}
-        <div className="absolute inset-0">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            className="ken-burns absolute inset-0 h-full w-full object-cover"
-            style={{ filter: "brightness(0.38) saturate(1.1)" }}
-          >
-            <source
-              src="https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Rosemount%20v2.mp4"
-              type="video/mp4"
-            />
-          </video>
-        </div>
+        {/* ═══ BRANDING ═══ */}
+        {activeTab === "branding" && (
+          <>
+            {/* Hero */}
+            <section className="relative flex min-h-[86vh] items-center overflow-hidden bg-black">
+              <div className="absolute inset-0">
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  className="ken-burns absolute inset-0 h-full w-full object-cover"
+                  style={{ filter: "brightness(0.36) saturate(1.1)" }}
+                >
+                  <source
+                    src="https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Rosemount%20v2.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+              </div>
 
-        {/* Layered cinematic overlays */}
-        {/* Vignette — darkens edges */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_50%,transparent_30%,rgba(0,0,0,0.70)_100%)]" />
-        {/* Bottom fade into next section */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black to-transparent" />
-        {/* Left reading gradient */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-2/3 bg-gradient-to-r from-black/60 to-transparent" />
-        {/* Top fade from nav */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/50 to-transparent" />
-        {/* Gold accent line at top */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#efcb6d]/50 to-transparent" />
+              {/* Overlays */}
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_50%,transparent_30%,rgba(0,0,0,0.72)_100%)]" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-2/3 bg-gradient-to-r from-black/55 to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#efcb6d]/50 to-transparent" />
 
-        {/* Subtle animated orbs behind content */}
-        <AnimatedBg orbs={[
-          { color: "rgba(239, 203, 109,0.10)", size: "700px", top: "-180px", right: "-60px",   anim: "orb-a", delay: "0s"  },
-          { color: "rgba(200,140,30,0.08)",  size: "500px", bottom: "-80px", left: "-60px", anim: "orb-b", delay: "-7s" },
-        ]} />
+              <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-16 pt-20 sm:px-6 lg:px-10 lg:pt-28">
+                <div className="max-w-3xl">
+                  <div className="hero-line mb-6 flex items-center gap-3" style={{ animationDelay: "0.1s" }}>
+                    <span className="h-4 w-px bg-white/25" />
+                    <p className="text-xs uppercase tracking-[0.36em] text-[#efcb6d]">
+                      Twin Cities Real Estate Media
+                    </p>
+                  </div>
 
-        {/* Content */}
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-20 pt-24 sm:px-6 lg:px-10 lg:pt-32 lg:pb-28">
-          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
+                  <h1 className="text-[2rem] font-semibold leading-[1.05] text-white sm:text-5xl lg:text-[4.5rem] lg:leading-[1.02]">
+                    <span className="hero-line block" style={{ animationDelay: "0.22s" }}>
+                      Listings that
+                    </span>
+                    <span className="hero-line block text-[#efcb6d]" style={{ animationDelay: "0.36s" }}>
+                      stop the scroll.
+                    </span>
+                  </h1>
 
-            {/* Left: copy */}
-            <div>
-              {/* Logo + eyebrow */}
-              <div
-                className="hero-line mb-6 flex items-center gap-3"
-                style={{ animationDelay: "0.1s" }}
-              >
-                <img src={logoSrc} alt="MAVN Creative" className="h-10 w-auto object-contain" />
-                <span className="h-4 w-px bg-white/25" />
-                <p className="text-xs uppercase tracking-[0.36em] text-[#efcb6d]">
-                  Twin Cities Real Estate Media
+                  <p
+                    className="hero-line mt-6 max-w-xl text-sm leading-7 text-white/75 sm:text-base lg:text-lg"
+                    style={{ animationDelay: "0.55s" }}
+                  >
+                    MAVN Creative produces cinematic real estate video and photography for
+                    Twin Cities agents who want their listings — and their personal brand —
+                    to stand out.
+                  </p>
+
+                  <div
+                    className="hero-line mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
+                    style={{ animationDelay: "0.7s" }}
+                  >
+                    <button
+                      onClick={() => goToTab("book")}
+                      className="btn-press rounded-2xl bg-[#efcb6d] px-7 py-3.5 text-sm font-semibold text-black"
+                    >
+                      Book With Us
+                    </button>
+                    <button
+                      onClick={() => goToTab("work")}
+                      className="btn-press rounded-2xl border border-white/20 bg-white/10 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/15"
+                    >
+                      View Our Work
+                    </button>
+                  </div>
+
+                  <div
+                    className="hero-line mt-12 flex flex-wrap gap-6 border-t border-white/10 pt-8 sm:gap-10"
+                    style={{ animationDelay: "0.85s" }}
+                  >
+                    {proofStats.map((stat) => (
+                      <div key={stat.label}>
+                        <p className="text-2xl font-semibold text-white">{stat.value}</p>
+                        <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-white/50">
+                          {stat.label}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Brand statement */}
+            <section className="mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-10 lg:py-24">
+              <div className="grid gap-8 md:grid-cols-2 md:gap-14 lg:grid-cols-[0.9fr_1.1fr]">
+                <div>
+                  <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">The Brand</p>
+                  <h2 className="mt-4 text-2xl font-semibold leading-tight text-white sm:text-3xl lg:text-4xl">
+                    Premium media for real estate professionals.
+                  </h2>
+                </div>
+                <div className="space-y-5 leading-7 text-white/80">
+                  <p>
+                    We produce cinematic listing videos, agent branding reels, and
+                    HDR photography for real estate professionals across the Twin Cities.
+                    Clean execution. Strong visuals. Content that makes your brand and your
+                    listings look the part.
+                  </p>
+                  <p className="text-white/65">
+                    Whether you have a listing going live this week or you're building a
+                    consistent presence on Instagram, we create visuals that make buyers
+                    stop, watch, and reach out.
+                  </p>
+                  <div className="flex flex-wrap gap-3 pt-2">
+                    <button
+                      onClick={() => goToTab("packages")}
+                      className="btn-press rounded-2xl border border-[#efcb6d]/30 bg-[#efcb6d]/10 px-5 py-3 text-sm font-semibold text-white"
+                    >
+                      See Packages
+                    </button>
+                    <a
+                      href="https://instagram.com/mavn.creative"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-press rounded-2xl border border-white/15 px-5 py-3 text-sm font-semibold text-white/80"
+                    >
+                      @mavn.creative
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </>
+        )}
+
+        {/* ═══ OUR WORK ═══ */}
+        {activeTab === "work" && (
+          <section className="relative overflow-hidden bg-[#0a0a0a]">
+            <AnimatedBg orbs={[
+              { color: "rgba(239, 203, 109,0.15)", size: "550px", top: "0px", left: "-100px", anim: "orb-c", delay: "-5s" },
+              { color: "rgba(220,160,40,0.12)", size: "400px", bottom: "50px", right: "-80px", anim: "orb-a", delay: "-9s" },
+            ]} />
+            <div className="relative z-10 mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-10 lg:py-24">
+              <div className="mb-10 max-w-2xl">
+                <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">Our Work</p>
+                <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">Recent work</h2>
+                <p className="mt-4 leading-7 text-white/70">
+                  Listing films, social reels, and brand videos that show the quality of
+                  our work instantly.
                 </p>
               </div>
 
-              {/* Main headline — playbook copy */}
-              <h1 className="text-[2rem] font-semibold leading-[1.05] text-white sm:text-5xl lg:text-[4.25rem] lg:leading-[1.02]">
-                <span className="hero-line block" style={{ animationDelay: "0.22s" }}>
-                  Listings that
-                </span>
-                <span className="hero-line block text-[#efcb6d]" style={{ animationDelay: "0.36s" }}>
-                  stop the scroll.
-                </span>
-              </h1>
-
-              {/* Subtext */}
-              <p
-                className="hero-line mt-5 max-w-xl text-sm leading-7 text-white/75 sm:mt-6 sm:text-base lg:text-lg"
-                style={{ animationDelay: "0.55s" }}
-              >
-                MAVN Creative produces cinematic real estate video and
-                photography for Twin Cities agents who want their listings to
-                stand out. New client discount available — we'll be in touch
-                within the hour.
-              </p>
-
-              {/* Secondary links */}
-              <div
-                className="hero-line mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm"
-                style={{ animationDelay: "0.7s" }}
-              >
-                <a href="#portfolio" className="font-semibold text-[#efcb6d] hover:underline">
-                  View our work →
-                </a>
-                <a href="#packages" className="text-white/70 transition hover:text-white">
-                  See packages
-                </a>
-                <a
-                  href="https://instagram.com/mavn.creative"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/70 transition hover:text-white"
-                >
-                  @mavn.creative
-                </a>
-              </div>
-
-              {/* Stat row */}
-              <div
-                className="hero-line mt-10 flex flex-wrap gap-6 border-t border-white/10 pt-8 sm:gap-10"
-                style={{ animationDelay: "0.85s" }}
-              >
-                {proofStats.map((stat) => (
-                  <div key={stat.label}>
-                    <p className="text-2xl font-semibold text-white">{stat.value}</p>
-                    <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-white/50">
-                      {stat.label}
-                    </p>
+              <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+                {portfolioItems.map((item) => (
+                  <div
+                    key={item.title}
+                    className="card-lift overflow-hidden rounded-[30px] border border-[#efcb6d]/20 bg-[#1a1a1a]"
+                  >
+                    <div className="relative mx-auto w-full max-w-[320px] p-4">
+                      <VideoPlayer
+                        src={item.videoSrc}
+                        className="aspect-[9/16] w-full rounded-[24px] object-cover"
+                        style={{ display: "block" }}
+                        controls
+                        muted
+                        playsInline
+                        preload="metadata"
+                      />
+                      <div className="absolute left-4 top-4 rounded-full border border-[#efcb6d]/25 bg-[#1a1a1a]/95 px-3 py-1.5 text-[9px] uppercase tracking-[0.20em] text-white sm:px-4 sm:py-2 sm:text-[10px]">
+                        {item.type}
+                      </div>
+                    </div>
+                    <div className="space-y-3 px-6 pb-6 pt-2 text-center">
+                      <h3 className="text-xl font-medium text-white">{item.title}</h3>
+                      <p className="text-sm leading-6 text-white/75">{item.description}</p>
+                    </div>
                   </div>
                 ))}
               </div>
-            </div>
 
-            {/* Right: lead form */}
-            <div
-              id="lead"
-              className="hero-line rounded-[28px] border border-[#efcb6d]/25 bg-black/55 p-5 shadow-2xl shadow-black/50 backdrop-blur-md sm:p-7"
-              style={{ animationDelay: "0.4s" }}
-            >
-              {leadStatus === "success" ? (
-                <div className="flex min-h-[420px] flex-col items-center justify-center text-center">
-                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#efcb6d] text-2xl text-black">
-                    ✓
-                  </div>
-                  <h3 className="text-xl font-semibold text-white">You're in.</h3>
-                  <p className="mt-3 max-w-xs text-sm leading-6 text-white/70">
-                    Thanks, {leadData.firstName}. Adam will reach out within
-                    the hour to lock in the details.
-                  </p>
-                  <a
-                    href="#portfolio"
-                    className="btn-press mt-6 rounded-2xl border border-[#efcb6d]/40 bg-white/5 px-5 py-3 text-sm font-semibold text-white"
+              <div className="mt-12 flex flex-col items-start gap-4 border-t border-white/10 pt-10 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-white/70">Like what you see? Let's build content for your brand.</p>
+                <button
+                  onClick={() => goToTab("book")}
+                  className="btn-press rounded-2xl bg-[#efcb6d] px-6 py-3.5 text-sm font-semibold text-black"
+                >
+                  Book With Us
+                </button>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* ═══ PACKAGES ═══ */}
+        {activeTab === "packages" && (
+          <section className="relative overflow-hidden bg-[#0a0a0a]">
+            <AnimatedBg orbs={[
+              { color: "rgba(239, 203, 109,0.20)", size: "620px", top: "-140px", left: "-100px", anim: "orb-b", delay: "-1s" },
+              { color: "rgba(200,130,20,0.14)", size: "500px", top: "30%", right: "-120px", anim: "orb-a", delay: "-5s" },
+            ]} />
+            <div className="relative z-10 mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-10 lg:py-24">
+              <div className="mb-10 max-w-2xl">
+                <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">Agent Content Packages</p>
+                <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">
+                  Done-for-you content that builds your brand.
+                </h2>
+                <p className="mt-4 leading-7 text-white/70">
+                  Monthly social content that builds your brand and generates inbound leads —
+                  scripted, shot, and delivered for you every month.
+                </p>
+              </div>
+
+              {/* Tiers */}
+              <div className="grid gap-5 lg:grid-cols-3">
+                {packages.map((pkg) => (
+                  <div
+                    key={pkg.name}
+                    className={`card-lift flex flex-col rounded-[28px] border p-6 lg:p-7 ${
+                      pkg.featured
+                        ? "border-[#efcb6d]/45 bg-[#1f1f1f]"
+                        : "border-[#efcb6d]/20 bg-[#1a1a1a]"
+                    }`}
                   >
-                    Browse our work while you wait
-                  </a>
-                </div>
-              ) : (
-                <>
-                  <p className="text-xs uppercase tracking-[0.28em] text-[#efcb6d]">
-                    Book a shoot
-                  </p>
-                  <h2 className="mt-2 text-xl font-semibold text-white sm:text-2xl">
-                    Tell us about your listing.
-                  </h2>
-                  <p className="mt-2 text-sm leading-6 text-white/65">
-                    Fill this out and we'll reply within the hour.
-                  </p>
-
-                  <form onSubmit={submitLead} className="mt-5 grid gap-3 sm:grid-cols-2">
-                    <input
-                      required
-                      type="text"
-                      placeholder="First name"
-                      value={leadData.firstName}
-                      onChange={(e) => setLeadData({ ...leadData, firstName: e.target.value })}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none transition focus:border-[#efcb6d]/60"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Last name"
-                      value={leadData.lastName}
-                      onChange={(e) => setLeadData({ ...leadData, lastName: e.target.value })}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none transition focus:border-[#efcb6d]/60"
-                    />
-                    <input
-                      required
-                      type="tel"
-                      placeholder="Phone number"
-                      value={leadData.phone}
-                      onChange={(e) => setLeadData({ ...leadData, phone: e.target.value })}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none transition focus:border-[#efcb6d]/60"
-                    />
-                    <input
-                      required
-                      type="email"
-                      placeholder="Email address"
-                      value={leadData.email}
-                      onChange={(e) => setLeadData({ ...leadData, email: e.target.value })}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none transition focus:border-[#efcb6d]/60"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Brokerage"
-                      value={leadData.brokerage}
-                      onChange={(e) => setLeadData({ ...leadData, brokerage: e.target.value })}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none transition focus:border-[#efcb6d]/60 sm:col-span-2"
-                    />
-                    <select
-                      value={leadData.lookingFor}
-                      onChange={(e) => setLeadData({ ...leadData, lookingFor: e.target.value })}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none transition focus:border-[#efcb6d]/60 sm:col-span-2"
-                    >
-                      <option>Listing Photography</option>
-                      <option>Listing Video / Reel</option>
-                      <option>Agent Branding Video</option>
-                      <option>Monthly Content Retainer</option>
-                      <option>Not Sure Yet</option>
-                    </select>
-
-                    <button
-                      type="submit"
-                      disabled={leadStatus === "submitting"}
-                      className="btn-press mt-1 w-full rounded-2xl bg-[#efcb6d] px-6 py-3.5 text-sm font-semibold text-black disabled:opacity-60 sm:col-span-2"
-                    >
-                      {leadStatus === "submitting" ? "Sending…" : "Get In Touch"}
-                    </button>
-
-                    {leadStatus === "error" && (
-                      <p className="text-xs text-red-400 sm:col-span-2">{leadError}</p>
+                    {pkg.featured && (
+                      <div className="mb-4 inline-flex w-fit rounded-full bg-[#efcb6d] px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-black">
+                        Most Popular
+                      </div>
                     )}
-
-                    <p className="text-[11px] leading-5 text-white/45 sm:col-span-2">
-                      By submitting you agree to be contacted about your project. No spam.
+                    <p className="text-[11px] uppercase tracking-[0.22em] text-[#efcb6d]">{pkg.tier}</p>
+                    <h3 className="mt-2 text-2xl font-semibold text-white">{pkg.name}</h3>
+                    <p className="mt-1 text-sm text-white/65">{pkg.tagline}</p>
+                    <div className="mt-5 border-y border-[#efcb6d]/15 py-5">
+                      <p className="text-4xl font-semibold tracking-tight text-white lg:text-5xl">
+                        {pkg.price}
+                        <span className="ml-1 text-sm font-normal text-white/55">/ month</span>
+                      </p>
+                      <p className="mt-1 text-xs text-white/50">3–6 month commitment · billed monthly</p>
+                    </div>
+                    <div className="mt-6 flex-1 space-y-2.5">
+                      {pkg.includes.map((item) => (
+                        <div key={item} className="flex items-start gap-2.5 text-sm text-white/85">
+                          <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-[#efcb6d]" />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                    <p className="mt-5 rounded-2xl bg-[#efcb6d]/10 px-4 py-3 text-center text-sm font-medium text-white/85">
+                      {pkg.note}
                     </p>
-                  </form>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-2">
-          <p className="text-[9px] uppercase tracking-[0.35em] text-white/35">Scroll</p>
-          <svg
-            className="scroll-bounce text-white/35"
-            width="18" height="18" viewBox="0 0 24 24"
-            fill="none" stroke="currentColor" strokeWidth="2"
-            strokeLinecap="round" strokeLinejoin="round"
-          >
-            <polyline points="6 9 12 15 18 9" />
-          </svg>
-        </div>
-      </section>
-
-      {/* ── Why It Works ── */}
-      <section className="border-y border-[#292929] bg-[#0f0f0f]">
-        <div className="mx-auto max-w-7xl px-5 py-12 sm:px-6 lg:px-10 lg:py-16">
-          <div className="anim mb-8">
-            <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">
-              Why it works
-            </p>
-            <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
-              Media built for attention, perception, and results.
-            </h2>
-          </div>
-
-          <div className="grid gap-5 md:grid-cols-3">
-            {proofStats.map((stat, i) => (
-              <div
-                key={stat.label}
-                className="anim card-lift rounded-[28px] border border-[#292929] bg-[#1a1a1a] p-6"
-                data-delay={String(i * 100)}
-              >
-                <p className="text-sm uppercase tracking-[0.2em] text-[#efcb6d]">
-                  {stat.label}
-                </p>
-                <p className="mt-4 text-3xl font-semibold text-white">
-                  {stat.value}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── About ── */}
-      <section id="about" className="mx-auto max-w-7xl px-5 py-14 sm:px-6 lg:px-10 lg:py-20">
-        <div className="anim grid gap-8 md:grid-cols-2 md:gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-          <div>
-            <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">
-              About
-            </p>
-            <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
-              Premium media for real estate professionals.
-            </h2>
-          </div>
-          <div className="leading-7 text-white/80">
-            <p>
-              We produce cinematic listing videos, agent branding reels, and HDR
-              photography for real estate professionals in Minnesota. Clean
-              execution. Strong visuals. Content that makes your brand and your
-              listings look the part.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Services ── */}
-      <section
-        id="services"
-        className="relative overflow-hidden border-y border-[#efcb6d]/20 bg-[#151515]"
-      >
-        <AnimatedBg orbs={[
-          { color: "rgba(239, 203, 109,0.18)", size: "500px", top: "-100px", right: "-80px",  anim: "orb-b", delay: "-3s" },
-          { color: "rgba(120, 95, 50,0.14)",  size: "420px", bottom: "-60px", left: "10%",  anim: "orb-a", delay: "-7s" },
-          { color: "rgba(239, 203, 109,0.08)",  size: "300px", top: "40%",  left: "-60px",    anim: "orb-c", delay: "-12s" },
-        ]} />
-        <div className="relative z-10 mx-auto max-w-7xl px-5 py-14 sm:px-6 lg:px-10 lg:py-20">
-          <div className="anim mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">
-                Services
-              </p>
-              <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
-                What we do
-              </h2>
-            </div>
-            <p className="max-w-md text-sm leading-6 text-white/65">
-              Six ways we help you show up stronger.
-            </p>
-          </div>
-
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {services.map((service, i) => (
-              <div
-                key={service.title}
-                className="anim card-lift rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6 shadow-2xl shadow-black/30"
-                data-delay={String((i % 3) * 90)}
-              >
-                <h3 className="text-xl font-medium text-white">
-                  {service.title}
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-white/75">
-                  {service.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Portfolio ── */}
-      <section
-        id="portfolio"
-        className="relative overflow-hidden bg-[#0a0a0a]"
-      >
-        <AnimatedBg orbs={[
-          { color: "rgba(239, 203, 109,0.15)", size: "550px", top: "0px",    left: "-100px",  anim: "orb-c", delay: "-5s" },
-          { color: "rgba(220,160,40,0.12)",  size: "400px", bottom: "50px", right: "-80px", anim: "orb-a", delay: "-9s" },
-        ]} />
-        <div className="relative z-10 mx-auto max-w-7xl px-5 py-14 sm:px-6 lg:px-10 lg:py-20">
-        <div className="anim mb-8">
-          <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">
-            Portfolio
-          </p>
-          <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
-            Recent work
-          </h2>
-          <p className="mt-4 max-w-2xl leading-7 text-white/75">
-            Listing films, social reels, and brand videos that show the quality
-            of our work instantly.
-          </p>
-        </div>
-
-        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-          {portfolioItems.map((item, i) => (
-            <div
-              key={item.title}
-              className="anim card-lift overflow-hidden rounded-[30px] border border-[#efcb6d]/20 bg-[#1a1a1a]"
-              data-delay={String((i % 4) * 90)}
-            >
-              <div className="relative mx-auto w-full max-w-[320px] p-4">
-                <VideoPlayer
-                  src={item.videoSrc}
-                  className="aspect-[9/16] w-full rounded-[24px] object-cover"
-                  style={{ display: "block" }}
-                  controls
-                  muted
-                  playsInline
-                  preload="metadata"
-                />
-                <div className="absolute left-4 top-4 rounded-full border border-[#efcb6d]/25 bg-[#1a1a1a]/95 px-3 py-1.5 text-[9px] uppercase tracking-[0.20em] text-white sm:left-8 sm:top-8 sm:px-4 sm:py-2 sm:text-[10px]">
-                  {item.type}
-                </div>
-              </div>
-              <div className="space-y-3 px-6 pb-6 pt-2 text-center">
-                <h3 className="text-xl font-medium text-white">{item.title}</h3>
-                <p className="text-sm leading-6 text-white/75">
-                  {item.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-        </div>
-      </section>
-
-      {/* ── Process ── */}
-      <section className="relative overflow-hidden border-y border-[#efcb6d]/20 bg-[#151515]">
-        <AnimatedBg orbs={[
-          { color: "rgba(239, 203, 109,0.16)", size: "480px", top: "-80px",  right: "5%",    anim: "orb-a", delay: "-2s" },
-          { color: "rgba(120, 95, 50,0.12)",  size: "360px", bottom: "-40px", left: "-60px", anim: "orb-b", delay: "-6s" },
-        ]} />
-        <div className="relative z-10 mx-auto max-w-7xl px-5 py-14 sm:px-6 lg:px-10 lg:py-20">
-          <div className="anim mb-8">
-            <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">
-              Process
-            </p>
-            <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
-              Simple, clear, and built for busy professionals.
-            </h2>
-          </div>
-
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {process.map((item, i) => (
-              <div
-                key={item.step}
-                className="anim card-lift rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6"
-                data-delay={String(i * 90)}
-              >
-                <p className="text-sm text-white/60">Step {item.step}</p>
-                <h3 className="mt-3 text-xl font-medium text-white">
-                  {item.title}
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-white/75">
-                  {item.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Packages ── */}
-      <section id="packages" className="relative overflow-hidden border-y border-[#efcb6d]/20 bg-[#0a0a0a]">
-        <AnimatedBg orbs={[
-          { color: "rgba(239, 203, 109,0.22)", size: "620px", top: "-140px", left: "-100px",  anim: "orb-b", delay: "-1s" },
-          { color: "rgba(200,130,20,0.16)",  size: "500px", top: "30%",  right: "-120px",  anim: "orb-a", delay: "-5s" },
-          { color: "rgba(239, 203, 109,0.10)",  size: "350px", bottom: "-80px", left: "35%",  anim: "orb-c", delay: "-10s" },
-        ]} />
-        <div className="relative z-10 mx-auto max-w-7xl px-5 py-14 sm:px-6 lg:px-10 lg:py-20">
-          <div className="anim mb-8">
-            <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">
-              Packages
-            </p>
-            <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
-              Options built around how real estate clients actually buy media.
-            </h2>
-          </div>
-
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-            {packages.map((pkg, i) => (
-              <div
-                key={pkg.name}
-                className={`anim card-lift rounded-[28px] border p-5 lg:p-7 ${
-                  pkg.featured
-                    ? "border-[#efcb6d]/45 bg-[#1f1f1f]"
-                    : "border-[#efcb6d]/20 bg-[#1a1a1a]"
-                }`}
-                data-delay={String((i % 4) * 80)}
-              >
-                {pkg.featured && (
-                  <div className="mb-4 inline-flex rounded-full border border-[#efcb6d]/30 bg-[#efcb6d] px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-black">
-                    Most Popular
-                  </div>
-                )}
-                <h3 className="text-2xl font-semibold text-white">
-                  {pkg.name}
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-white/75">
-                  {pkg.subtitle}
-                </p>
-                <div className="mt-5 border-y border-[#efcb6d]/15 py-5">
-                  <p className="text-4xl font-semibold tracking-tight text-white lg:text-5xl">
-                    {pkg.price}
-                  </p>
-                  <p className="mt-1 text-sm text-white/60">
-                    {pkg.price === "Custom" ? "quote based on scope" : "per property"}
-                  </p>
-                </div>
-                <div className="mt-6 space-y-3">
-                  {pkg.includes.map((item) => (
-                    <div
-                      key={item}
-                      className="rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3 text-sm text-white/85"
+                    <button
+                      onClick={() => goToTab("book")}
+                      className="btn-press mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#efcb6d] px-5 py-3.5 text-sm font-semibold text-black"
                     >
-                      {item}
+                      Get Started
+                      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {/* Monthly content mix */}
+              <div className="mt-16">
+                <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">Monthly Content Mix</p>
+                <h3 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">
+                  4 video types, every month.
+                </h3>
+                <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+                  {videoTypes.map((v, i) => (
+                    <div key={v.title} className="card-lift rounded-[24px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6">
+                      <p className="text-sm text-white/45">0{i + 1}</p>
+                      <p className="mt-2 text-[11px] uppercase tracking-[0.2em] text-[#efcb6d]">{v.tag}</p>
+                      <h4 className="mt-1 text-lg font-medium text-white">{v.title}</h4>
+                      <p className="mt-3 text-sm leading-6 text-white/70">{v.description}</p>
                     </div>
                   ))}
                 </div>
-                <div className="mt-5 rounded-2xl bg-[#efcb6d]/12 px-4 py-3 text-sm font-medium text-white/85">
-                  {pkg.addOn}
-                </div>
-                <a
-                  href={pkg.price === "Custom" ? "#contact" : `/checkout?package=${pkg.name.toLowerCase()}`}
-                  className="btn-press mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#efcb6d] px-5 py-3.5 text-sm font-semibold text-black"
-                >
-                  {pkg.price === "Custom" ? "Get a Quote" : "Book Now"}
-                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </a>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* ── Add-Ons ── */}
-      <section className="border-b border-[#292929] bg-[#0f0f0f]">
-        <div className="mx-auto max-w-7xl px-5 py-12 sm:px-6 lg:px-10 lg:py-16">
-          <div className="anim mb-8">
-            <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">
-              A La Carte Add-Ons
-            </p>
-            <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
-              Customize your package with extra services.
-            </h2>
-            <p className="mt-4 max-w-2xl leading-7 text-white/60">
-              Flexible upgrades for listings that need more coverage, more
-              polish, or more branded content.
-            </p>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {addOns.map((item, i) => (
-              <div
-                key={item.name}
-                className="anim card-lift rounded-[24px] border border-[#292929] bg-[#1a1a1a] p-5"
-                data-delay={String((i % 3) * 80)}
-              >
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-                  <div>
-                    <h3 className="text-base font-semibold text-white sm:text-lg">
-                      {item.name}
-                    </h3>
-                    <p className="mt-2 text-sm leading-6 text-white/60">
-                      {item.detail}
-                    </p>
-                  </div>
-                  <div className="rounded-full bg-[#efcb6d] px-3 py-1 text-sm font-semibold text-black">
-                    {item.price}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Contact ── */}
-      <section id="contact" className="relative overflow-hidden border-t border-[#efcb6d]/20 bg-[#151515]">
-        <AnimatedBg orbs={[
-          { color: "rgba(239, 203, 109,0.16)", size: "520px", top: "-60px",  right: "-80px", anim: "orb-c", delay: "-4s" },
-          { color: "rgba(120, 95, 50,0.12)",  size: "400px", bottom: "0px", left: "-60px", anim: "orb-b", delay: "-8s" },
-        ]} />
-        <div className="relative z-10 mx-auto max-w-7xl px-5 py-14 sm:px-6 lg:px-10 lg:py-20">
-          <div className="anim mb-10 max-w-3xl">
-            <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">
-              Booking
-            </p>
-            <h2 className="mt-4 text-2xl font-semibold text-white sm:text-3xl lg:text-4xl">
-              Book your shoot and tell us what you need.
-            </h2>
-            <p className="mt-5 max-w-2xl leading-7 text-white/75">
-              Submit your project details and we'll follow up manually with
-              pricing, availability, and next steps.
-            </p>
-          </div>
-
-          <div className="anim grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
-            <form
-              action="mailto:contact@mavncreative.com"
-              method="POST"
-              encType="text/plain"
-              className="rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-5 lg:p-8"
-            >
-              <div className="grid gap-5 md:grid-cols-2">
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-white">
-                    Full Name
-                  </label>
-                  <input
-                    name="Full Name"
-                    type="text"
-                    value={bookingData.fullName}
-                    onChange={(e) =>
-                      setBookingData({ ...bookingData, fullName: e.target.value })
-                    }
-                    placeholder="Your full name"
-                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
-                  />
-                </div>
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-white">
-                    Email Address
-                  </label>
-                  <input
-                    name="Email"
-                    type="email"
-                    value={bookingData.email}
-                    onChange={(e) =>
-                      setBookingData({ ...bookingData, email: e.target.value })
-                    }
-                    placeholder="you@example.com"
-                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
-                  />
-                </div>
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-white">
-                    Phone Number
-                  </label>
-                  <input
-                    name="Phone"
-                    type="tel"
-                    value={bookingData.phone}
-                    onChange={(e) =>
-                      setBookingData({ ...bookingData, phone: e.target.value })
-                    }
-                    placeholder="(555) 555-5555"
-                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
-                  />
-                </div>
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-white">
-                    Your Location
-                  </label>
-                  <input
-                    name="Client Location"
-                    type="text"
-                    value={bookingData.clientLocation}
-                    onChange={(e) =>
-                      setBookingData({
-                        ...bookingData,
-                        clientLocation: e.target.value,
-                      })
-                    }
-                    placeholder="City, State"
-                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="mb-2 block text-sm font-medium text-white">
-                    What Do You Need?
-                  </label>
-                  <select
-                    name="Service Needed"
-                    value={bookingData.serviceNeeded}
-                    onChange={(e) =>
-                      setBookingData({
-                        ...bookingData,
-                        serviceNeeded: e.target.value,
-                      })
-                    }
-                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white outline-none transition focus:border-[#efcb6d]/50"
-                  >
-                    <option>Cinematic Listing Video</option>
-                    <option>Agent Branding Video</option>
-                    <option>HDR Photography</option>
-                    <option>Drone + Photo Package</option>
-                    <option>Custom Package</option>
-                    <option>Other</option>
-                  </select>
-                </div>
-                <div className="md:col-span-2">
-                  <label className="mb-2 block text-sm font-medium text-white">
-                    Property Address
-                  </label>
-                  <input
-                    name="Property Address"
-                    type="text"
-                    value={bookingData.propertyAddress}
-                    onChange={(e) =>
-                      setBookingData({
-                        ...bookingData,
-                        propertyAddress: e.target.value,
-                      })
-                    }
-                    placeholder="123 Main Street"
-                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
-                  />
-                </div>
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-white">
-                    Property City
-                  </label>
-                  <input
-                    name="Property City"
-                    type="text"
-                    value={bookingData.propertyCity}
-                    onChange={(e) =>
-                      setBookingData({
-                        ...bookingData,
-                        propertyCity: e.target.value,
-                      })
-                    }
-                    placeholder="City"
-                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
-                  />
-                </div>
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-white">
-                    Property State
-                  </label>
-                  <input
-                    name="Property State"
-                    type="text"
-                    value={bookingData.propertyState}
-                    onChange={(e) =>
-                      setBookingData({
-                        ...bookingData,
-                        propertyState: e.target.value,
-                      })
-                    }
-                    placeholder="State"
-                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
-                  />
-                </div>
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-white">
-                    Square Footage
-                  </label>
-                  <input
-                    name="Square Footage"
-                    type="text"
-                    value={bookingData.squareFootage}
-                    onChange={(e) =>
-                      setBookingData({
-                        ...bookingData,
-                        squareFootage: e.target.value,
-                      })
-                    }
-                    placeholder="e.g. 2,400"
-                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
-                  />
-                </div>
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-white">
-                    Bedrooms / Bathrooms
-                  </label>
-                  <input
-                    name="Bedrooms Bathrooms"
-                    type="text"
-                    value={bookingData.bedBath}
-                    onChange={(e) =>
-                      setBookingData({ ...bookingData, bedBath: e.target.value })
-                    }
-                    placeholder="4 bed / 3 bath"
-                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
-                  />
-                </div>
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-white">
-                    Preferred Shoot Date
-                  </label>
-                  <input
-                    name="Preferred Shoot Date"
-                    type="date"
-                    value={bookingData.preferredShootDate}
-                    onChange={(e) =>
-                      setBookingData({
-                        ...bookingData,
-                        preferredShootDate: e.target.value,
-                      })
-                    }
-                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white outline-none transition focus:border-[#efcb6d]/50"
-                  />
-                </div>
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-white">
-                    MLS / Listing Status
-                  </label>
-                  <input
-                    name="Listing Status"
-                    type="text"
-                    value={bookingData.listingStatus}
-                    onChange={(e) =>
-                      setBookingData({
-                        ...bookingData,
-                        listingStatus: e.target.value,
-                      })
-                    }
-                    placeholder="Coming soon, active, vacant, etc."
-                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="mb-2 block text-sm font-medium text-white">
-                    Project Notes
-                  </label>
-                  <textarea
-                    name="Project Notes"
-                    rows={4}
-                    value={bookingData.projectNotes}
-                    onChange={(e) =>
-                      setBookingData({
-                        ...bookingData,
-                        projectNotes: e.target.value,
-                      })
-                    }
-                    placeholder="Tell us about the property, timeline, access details, or anything else we should know."
-                    className="w-full rounded-2xl border border-[#efcb6d]/15 bg-[#151515] px-4 py-3.5 text-white placeholder:text-white/30 outline-none transition focus:border-[#efcb6d]/50"
-                  />
+              {/* Lead-gen system */}
+              <div className="mt-16">
+                <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">Lead Generation System</p>
+                <h3 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">
+                  How content becomes clients.
+                </h3>
+                <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+                  {leadGenSteps.map((s) => (
+                    <div key={s.step} className="rounded-[24px] border border-[#efcb6d]/20 bg-[#151515] p-6">
+                      <p className="text-3xl font-semibold text-[#efcb6d]">{s.step}</p>
+                      <h4 className="mt-3 text-lg font-medium text-white">{s.title}</h4>
+                      <p className="mt-2 text-sm leading-6 text-white/70">{s.description}</p>
+                      <p className="mt-4 text-[10px] uppercase tracking-[0.22em] text-white/45">
+                        {s.audience}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between md:flex-col md:items-stretch lg:flex-row lg:items-center">
-                <p className="text-sm leading-6 text-white/60">
-                  We'll follow up with pricing, availability, and next steps directly.
-                </p>
+              <div className="mt-14 flex flex-col items-start gap-4 rounded-[28px] border border-[#efcb6d]/20 bg-[#151515] p-8 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-lg font-semibold text-white">Ready to build your presence?</p>
+                  <p className="mt-1 text-sm text-white/65">
+                    Tell us about your goals and we'll recommend the right package.
+                  </p>
+                </div>
                 <button
-                  type="submit"
-                  className="btn-press rounded-2xl bg-[#efcb6d] px-6 py-3 text-sm font-medium text-black"
+                  onClick={() => goToTab("book")}
+                  className="btn-press flex-none rounded-2xl bg-[#efcb6d] px-6 py-3.5 text-sm font-semibold text-black"
                 >
-                  Send Booking Request
+                  Book With Us
                 </button>
               </div>
-            </form>
+            </div>
+          </section>
+        )}
 
-            <div className="space-y-4">
-              <div className="card-lift rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6">
-                <p className="text-sm uppercase tracking-[0.18em] text-white/60">
-                  Email
-                </p>
-                <a
-                  href="mailto:contact@mavncreative.com"
-                  className="mt-3 block text-lg font-medium text-white transition hover:text-[#efcb6d]"
-                >
-                  contact@mavncreative.com
-                </a>
-              </div>
-              <div className="card-lift rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6">
-                <p className="text-sm uppercase tracking-[0.18em] text-white/60">
-                  Phone
-                </p>
-                <a
-                  href="tel:6124883825"
-                  className="mt-3 block text-lg font-medium text-white transition hover:text-[#efcb6d]"
-                >
-                  (612) 488-3825
-                </a>
-              </div>
-              <div className="card-lift rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6">
-                <p className="text-sm uppercase tracking-[0.18em] text-white/60">
-                  Launch Note
-                </p>
-                <p className="mt-3 text-sm leading-6 text-white/75">
-                  Online payment is being finalized. For now, submit your
-                  project details here and we'll confirm the booking manually.
+        {/* ═══ BOOK WITH US ═══ */}
+        {activeTab === "book" && (
+          <section className="relative overflow-hidden bg-[#151515]">
+            <AnimatedBg orbs={[
+              { color: "rgba(239, 203, 109,0.16)", size: "520px", top: "-60px", right: "-80px", anim: "orb-c", delay: "-4s" },
+              { color: "rgba(120, 95, 50,0.12)", size: "400px", bottom: "0px", left: "-60px", anim: "orb-b", delay: "-8s" },
+            ]} />
+            <div className="relative z-10 mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-10 lg:py-24">
+              <div className="mb-10 max-w-2xl">
+                <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">Book With Us</p>
+                <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">
+                  Tell us about your listing or brand.
+                </h2>
+                <p className="mt-4 leading-7 text-white/70">
+                  New client discount available. Fill out the form and we'll be in touch
+                  within the hour.
                 </p>
               </div>
-              <div className="card-lift rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6">
-                <p className="text-sm uppercase tracking-[0.18em] text-white/60">
-                  What Happens Next
-                </p>
-                <ul className="mt-3 space-y-3 text-sm leading-6 text-white/85">
-                  <li>• We review your request and confirm service needs</li>
-                  <li>• We reply with pricing, timing, and availability</li>
-                  <li>• We lock in your shoot date and prep details</li>
-                </ul>
+
+              <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
+                {/* Form */}
+                <div className="rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-5 lg:p-8">
+                  {leadStatus === "success" ? (
+                    <div className="flex min-h-[420px] flex-col items-center justify-center text-center">
+                      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#efcb6d] text-2xl text-black">
+                        ✓
+                      </div>
+                      <h3 className="text-xl font-semibold text-white">You're in.</h3>
+                      <p className="mt-3 max-w-xs text-sm leading-6 text-white/70">
+                        Thanks, {leadData.firstName}. We'll reach out within the hour to
+                        lock in the details.
+                      </p>
+                      <button
+                        onClick={() => goToTab("work")}
+                        className="btn-press mt-6 rounded-2xl border border-[#efcb6d]/40 bg-white/5 px-5 py-3 text-sm font-semibold text-white"
+                      >
+                        Browse our work while you wait
+                      </button>
+                    </div>
+                  ) : (
+                    <form onSubmit={submitLead} className="grid gap-4 sm:grid-cols-2">
+                      <input required type="text" placeholder="First name" value={leadData.firstName}
+                        onChange={(e) => setLeadData({ ...leadData, firstName: e.target.value })} className={inputClass} />
+                      <input type="text" placeholder="Last name" value={leadData.lastName}
+                        onChange={(e) => setLeadData({ ...leadData, lastName: e.target.value })} className={inputClass} />
+                      <input required type="tel" placeholder="Phone number" value={leadData.phone}
+                        onChange={(e) => setLeadData({ ...leadData, phone: e.target.value })} className={inputClass} />
+                      <input required type="email" placeholder="Email address" value={leadData.email}
+                        onChange={(e) => setLeadData({ ...leadData, email: e.target.value })} className={inputClass} />
+                      <input type="text" placeholder="Brokerage" value={leadData.brokerage}
+                        onChange={(e) => setLeadData({ ...leadData, brokerage: e.target.value })} className={`${inputClass} sm:col-span-2`} />
+                      <select value={leadData.lookingFor}
+                        onChange={(e) => setLeadData({ ...leadData, lookingFor: e.target.value })}
+                        className={`${inputClass} sm:col-span-2`}>
+                        <option>Monthly Content Package</option>
+                        <option>Listing Photography</option>
+                        <option>Listing Video / Reel</option>
+                        <option>Agent Branding Video</option>
+                        <option>Not Sure Yet</option>
+                      </select>
+                      <button type="submit" disabled={leadStatus === "submitting"}
+                        className="btn-press mt-1 w-full rounded-2xl bg-[#efcb6d] px-6 py-3.5 text-sm font-semibold text-black disabled:opacity-60 sm:col-span-2">
+                        {leadStatus === "submitting" ? "Sending…" : "Get In Touch"}
+                      </button>
+                      {leadStatus === "error" && (
+                        <p className="text-xs text-red-400 sm:col-span-2">{leadError}</p>
+                      )}
+                      <p className="text-[11px] leading-5 text-white/45 sm:col-span-2">
+                        By submitting you agree to be contacted about your project. No spam.
+                      </p>
+                    </form>
+                  )}
+                </div>
+
+                {/* Sidebar */}
+                <div className="space-y-4">
+                  <div className="card-lift rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6">
+                    <p className="text-sm uppercase tracking-[0.18em] text-white/60">What Happens Next</p>
+                    <ul className="mt-3 space-y-3 text-sm leading-6 text-white/85">
+                      <li>• We review your request and confirm what you need</li>
+                      <li>• We reply with pricing, timing, and availability</li>
+                      <li>• We lock in your shoot date and prep the details</li>
+                    </ul>
+                  </div>
+                  <div className="card-lift rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6">
+                    <p className="text-sm uppercase tracking-[0.18em] text-white/60">Email</p>
+                    <a href="mailto:contact@mavncreative.com" className="mt-3 block text-lg font-medium text-white transition hover:text-[#efcb6d]">
+                      contact@mavncreative.com
+                    </a>
+                  </div>
+                  <div className="card-lift rounded-[28px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6">
+                    <p className="text-sm uppercase tracking-[0.18em] text-white/60">Phone</p>
+                    <a href="tel:6124883825" className="mt-3 block text-lg font-medium text-white transition hover:text-[#efcb6d]">
+                      (612) 488-3825
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
+          </section>
+        )}
+      </div>
+
+      {/* ── Footer ── */}
+      <footer className="border-t border-[#efcb6d]/20 bg-black">
+        <div className="mx-auto flex max-w-7xl flex-col items-center gap-3 px-5 py-8 text-center sm:flex-row sm:justify-between sm:text-left lg:px-10">
+          <p className="text-sm text-white/55">
+            © {new Date().getFullYear()} MAVN Creative · Twin Cities Real Estate Media
+          </p>
+          <div className="flex items-center gap-5 text-sm text-white/55">
+            <a href="https://instagram.com/mavn.creative" target="_blank" rel="noopener noreferrer" className="transition hover:text-[#efcb6d]">@mavn.creative</a>
+            <a href="tel:6124883825" className="transition hover:text-[#efcb6d]">(612) 488-3825</a>
           </div>
         </div>
-      </section>
+      </footer>
     </div>
   );
 }
