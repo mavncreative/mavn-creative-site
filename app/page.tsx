@@ -224,6 +224,13 @@ export default function MavnCreativeSite() {
 
   const portfolioItems = [
     {
+      title: "509 Arlington Ave E",
+      type: "Listing Video",
+      description:
+        "A cinematic listing reel showcasing the property with clean movement and strong visual presentation.",
+      videoSrc: "/videos/509-arlington-ave-e.mp4",
+    },
+    {
       title: "913 E 39th Street",
       type: "Listing Video",
       description:
