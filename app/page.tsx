@@ -224,38 +224,6 @@ export default function MavnCreativeSite() {
 
   const portfolioItems = [
     {
-      title: "Cinematic Listing Reel",
-      type: "Listing Video",
-      description:
-        "A cinematic real estate showcase created for social media marketing and listing visibility.",
-      videoSrc:
-        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/4390_Normandy_%20Place_V5.mp4",
-    },
-    {
-      title: "Agent Branding Reel",
-      type: "Branding Video",
-      description:
-        "A personal brand focused reel designed to elevate agent presence and build trust online.",
-      videoSrc:
-        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Rosemount%20v2.mp4",
-    },
-    {
-      title: "Luxury Property Reel",
-      type: "Listing Video",
-      description:
-        "A cinematic property showcase built to create attention, highlight the home, and elevate the listing online.",
-      videoSrc:
-        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/869%20Lawson%20Ave%20Raw%20Footage%20V2.mp4",
-    },
-    {
-      title: "Property Showcase Reel",
-      type: "Listing Video",
-      description:
-        "A polished real estate reel created to showcase the property with cinematic movement and strong visual presentation.",
-      videoSrc:
-        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Abbott_Dr_N_Reel_V2.mp4",
-    },
-    {
       title: "913 E 39th Street",
       type: "Listing Video",
       description:
@@ -268,6 +236,38 @@ export default function MavnCreativeSite() {
       description:
         "A polished property showcase built to highlight the home and stop the scroll on social.",
       videoSrc: "/videos/1690-margaret-st.mp4",
+    },
+    {
+      title: "4390 Normandy Place",
+      type: "Listing Video",
+      description:
+        "A cinematic real estate showcase created for social media marketing and listing visibility.",
+      videoSrc:
+        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/4390_Normandy_%20Place_V5.mp4",
+    },
+    {
+      title: "869 Lawson Avenue",
+      type: "Listing Video",
+      description:
+        "A cinematic property showcase built to create attention, highlight the home, and elevate the listing online.",
+      videoSrc:
+        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/869%20Lawson%20Ave%20Raw%20Footage%20V2.mp4",
+    },
+    {
+      title: "Abbott Drive N",
+      type: "Listing Video",
+      description:
+        "A polished real estate reel created to showcase the property with cinematic movement and strong visual presentation.",
+      videoSrc:
+        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Abbott_Dr_N_Reel_V2.mp4",
+    },
+    {
+      title: "Rosemount",
+      type: "Branding Video",
+      description:
+        "A personal brand focused reel designed to elevate agent presence and build trust online.",
+      videoSrc:
+        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Rosemount%20v2.mp4",
     },
   ];
 
