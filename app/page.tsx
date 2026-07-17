@@ -42,31 +42,62 @@ function AnimatedBg({
   );
 }
 
-// ── Video player with error fallback ─────────────────────────────────────────
-function VideoPlayer({
+// ── Seamless work reel — autoplays on scroll into view, loops, no chrome ──────
+function WorkReel({
   src,
-  className,
-  muted,
-  loop,
-  playsInline,
-  controls,
-  preload,
-  style,
+  title,
+  type,
 }: {
   src: string;
-  className?: string;
-  muted?: boolean;
-  loop?: boolean;
-  playsInline?: boolean;
-  controls?: boolean;
-  preload?: string;
-  style?: React.CSSProperties;
+  title: string;
+  type: string;
 }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const retriesRef = useRef(0);
   const [errored, setErrored] = useState(false);
+  const [ready, setReady] = useState(false);
+  const [muted, setMuted] = useState(true);
+
+  // A single dropped chunk shouldn't kill the tile — retry the load a couple
+  // times before falling back to the "open video" link.
+  const handleError = () => {
+    const el = videoRef.current;
+    if (el && retriesRef.current < 2) {
+      retriesRef.current += 1;
+      setTimeout(() => el.load(), 400 * retriesRef.current);
+    } else {
+      setErrored(true);
+    }
+  };
+
+  // Play only while visible — keeps things smooth and light on the browser.
+  // Low threshold + rootMargin so tall 9:16 tiles start as they scroll in
+  // (a tile can be taller than the viewport and never hit a high threshold).
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) el.play().catch(() => {});
+        else el.pause();
+      },
+      { threshold: 0.1, rootMargin: "100px 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const toggleMute = () => {
+    const el = videoRef.current;
+    if (!el) return;
+    el.muted = !el.muted;
+    setMuted(el.muted);
+    el.play().catch(() => {});
+  };
 
   if (errored) {
     return (
-      <div className={`video-fallback ${className ?? ""}`} style={style}>
+      <div className="video-fallback flex aspect-[9/16] flex-col items-center justify-center gap-2 rounded-2xl">
         <a
           href={src}
           target="_blank"
@@ -75,24 +106,51 @@ function VideoPlayer({
         >
           Open video ↗
         </a>
-        <span style={{ fontSize: 11, opacity: 0.4 }}>Format not supported in this browser</span>
+        <span style={{ fontSize: 11, opacity: 0.4 }}>Format not supported</span>
       </div>
     );
   }
 
   return (
-    <video
-      className={className}
-      style={style}
-      muted={muted}
-      loop={loop}
-      playsInline={playsInline}
-      controls={controls}
-      preload={preload ?? "metadata"}
-      onError={() => setErrored(true)}
-    >
-      <source src={src} type="video/mp4" />
-    </video>
+    <div className="reel-tile group relative aspect-[9/16] overflow-hidden rounded-2xl bg-[#0d0d0d] ring-1 ring-white/5 transition-all duration-500 hover:ring-[#efcb6d]/30">
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        onLoadedData={() => setReady(true)}
+        onError={handleError}
+        className={`absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-700 ease-out group-hover:scale-[1.03] ${
+          ready ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <source src={src} type="video/mp4" />
+      </video>
+
+      {/* bottom gradient — always subtle, deepens on hover */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-100" />
+
+      {/* title + type — always on mobile, hover-reveal on desktop */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 p-3 opacity-100 transition-all duration-300 sm:translate-y-1 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100">
+        <p className="text-[9px] uppercase tracking-[0.22em] text-[#efcb6d]">{type}</p>
+        <p className="mt-0.5 text-sm font-medium leading-tight text-white">{title}</p>
+      </div>
+
+      {/* unmute toggle */}
+      <button
+        onClick={toggleMute}
+        aria-label={muted ? "Unmute" : "Mute"}
+        className="absolute right-2.5 top-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-black/45 text-white opacity-0 backdrop-blur-sm transition hover:bg-black/70 focus:opacity-100 group-hover:opacity-100"
+      >
+        {muted ? (
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+        ) : (
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        )}
+      </button>
+    </div>
   );
 }
 
@@ -609,30 +667,14 @@ export default function MavnCreativeSite() {
                 </p>
               </div>
 
-              <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-                {portfolioItems.map((item) => (
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+                {portfolioItems.map((item, i) => (
                   <div
                     key={item.title}
-                    className="card-lift overflow-hidden rounded-[30px] border border-[#efcb6d]/20 bg-[#1a1a1a]"
+                    className="reel-in"
+                    style={{ animationDelay: `${i * 90}ms` }}
                   >
-                    <div className="relative mx-auto w-full max-w-[320px] p-4">
-                      <VideoPlayer
-                        src={item.videoSrc}
-                        className="aspect-[9/16] w-full rounded-[24px] object-cover"
-                        style={{ display: "block" }}
-                        controls
-                        muted
-                        playsInline
-                        preload="metadata"
-                      />
-                      <div className="absolute left-4 top-4 rounded-full border border-[#efcb6d]/25 bg-[#1a1a1a]/95 px-3 py-1.5 text-[9px] uppercase tracking-[0.20em] text-white sm:px-4 sm:py-2 sm:text-[10px]">
-                        {item.type}
-                      </div>
-                    </div>
-                    <div className="space-y-3 px-6 pb-6 pt-2 text-center">
-                      <h3 className="text-xl font-medium text-white">{item.title}</h3>
-                      <p className="text-sm leading-6 text-white/75">{item.description}</p>
-                    </div>
+                    <WorkReel src={item.videoSrc} title={item.title} type={item.type} />
                   </div>
                 ))}
               </div>
