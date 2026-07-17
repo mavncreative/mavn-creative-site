@@ -553,10 +553,7 @@ export default function MavnCreativeSite() {
                   className="ken-burns absolute inset-0 h-full w-full object-cover"
                   style={{ filter: "brightness(0.36) saturate(1.1)" }}
                 >
-                  <source
-                    src="https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Rosemount%20v2.mp4"
-                    type="video/mp4"
-                  />
+                  <source src="/videos/913-e-39th-st.mp4" type="video/mp4" />
                 </video>
               </div>
 
