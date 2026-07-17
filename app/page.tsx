@@ -245,6 +245,14 @@ export default function MavnCreativeSite() {
       videoSrc: "/videos/1690-margaret-st.mp4",
     },
     {
+      title: "Rosemount",
+      type: "Branding Video",
+      description:
+        "A personal brand focused reel designed to elevate agent presence and build trust online.",
+      videoSrc:
+        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Rosemount%20v2.mp4",
+    },
+    {
       title: "4390 Normandy Place",
       type: "Listing Video",
       description:
@@ -267,14 +275,6 @@ export default function MavnCreativeSite() {
         "A polished real estate reel created to showcase the property with cinematic movement and strong visual presentation.",
       videoSrc:
         "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Abbott_Dr_N_Reel_V2.mp4",
-    },
-    {
-      title: "Rosemount",
-      type: "Branding Video",
-      description:
-        "A personal brand focused reel designed to elevate agent presence and build trust online.",
-      videoSrc:
-        "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Rosemount%20v2.mp4",
     },
   ];
 
