@@ -255,6 +255,20 @@ export default function MavnCreativeSite() {
       videoSrc:
         "https://fn9qpleiatjb4gdq.public.blob.vercel-storage.com/Abbott_Dr_N_Reel_V2.mp4",
     },
+    {
+      title: "913 E 39th Street",
+      type: "Listing Video",
+      description:
+        "A cinematic listing reel capturing the property with smooth movement and a strong sense of place.",
+      videoSrc: "/videos/913-e-39th-st.mp4",
+    },
+    {
+      title: "1690 Margaret Street",
+      type: "Listing Video",
+      description:
+        "A polished property showcase built to highlight the home and stop the scroll on social.",
+      videoSrc: "/videos/1690-margaret-st.mp4",
+    },
   ];
 
   // Monthly agent content packages (from MAVN content package pricing)
