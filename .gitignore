@@ -40,4 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Large source/raw videos stay out of git — host on Vercel Blob CDN instead.
 public/videos/*.mp4
+# Exceptions: these two are committed intentionally (compressed for web).
+!public/videos/913-e-39th-st.mp4
+!public/videos/1690-margaret-st.mp4
