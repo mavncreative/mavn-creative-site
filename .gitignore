@@ -46,3 +46,13 @@ public/videos/*.mp4
 !public/videos/913-e-39th-st.mp4
 !public/videos/1690-margaret-st.mp4
 !public/videos/509-arlington-ave-e.mp4
+
+# OpenNext
+.open-next
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+
+!.env.example
