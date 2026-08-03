@@ -224,6 +224,13 @@ export default function MavnCreativeSite() {
 
   const portfolioItems = [
     {
+      title: "4858 Irving Ave S",
+      type: "Listing Video",
+      description:
+        "A cinematic listing reel showcasing the property with clean movement and strong visual presentation.",
+      videoSrc: "/videos/4858-irving-ave-s.mp4",
+    },
+    {
       title: "509 Arlington Ave E",
       type: "Listing Video",
       description:
