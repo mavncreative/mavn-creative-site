@@ -39,7 +39,7 @@ export async function GET() {
     resendConfigured: !!process.env.RESEND_API_KEY,
     ghlConfigured: !!process.env.GHL_WEBHOOK_URL,
     leadInbox: process.env.LEAD_INBOX || "contact@mavncreative.com",
-    from: process.env.LEAD_FROM || "MAVN Creative <leads@mavncreative.com>",
+    from: process.env.LEAD_FROM || "MAVN Creative <onboarding@resend.dev>",
   });
 }
 
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
     // 2) Also email an internal notification via Resend (optional backup).
     const apiKey = process.env.RESEND_API_KEY;
     const to = process.env.LEAD_INBOX || "contact@mavncreative.com";
-    const from = process.env.LEAD_FROM || "MAVN Creative <leads@mavncreative.com>";
+    const from = process.env.LEAD_FROM || "MAVN Creative <onboarding@resend.dev>";
 
     let emailed = false;
     let emailError: string | undefined;
