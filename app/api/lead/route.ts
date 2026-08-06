@@ -33,6 +33,16 @@ async function forwardToGHL(payload: {
   return { forwarded: true };
 }
 
+// Health check — reports which delivery channels are configured (no secrets).
+export async function GET() {
+  return NextResponse.json({
+    resendConfigured: !!process.env.RESEND_API_KEY,
+    ghlConfigured: !!process.env.GHL_WEBHOOK_URL,
+    leadInbox: process.env.LEAD_INBOX || "contact@mavncreative.com",
+    from: process.env.LEAD_FROM || "MAVN Creative <leads@mavncreative.com>",
+  });
+}
+
 export async function POST(req: NextRequest) {
   try {
     const {
@@ -68,6 +78,9 @@ export async function POST(req: NextRequest) {
     const to = process.env.LEAD_INBOX || "contact@mavncreative.com";
     const from = process.env.LEAD_FROM || "MAVN Creative <leads@mavncreative.com>";
 
+    let emailed = false;
+    let emailError: string | undefined;
+
     if (apiKey) {
       const resend = new Resend(apiKey);
       const html = `
@@ -79,13 +92,20 @@ export async function POST(req: NextRequest) {
         <p><strong>Looking for:</strong> ${lookingFor ?? "—"}</p>
         <p><strong>Pushed to GHL:</strong> ${forwarded ? "yes" : "no"}</p>
       `;
-      await resend.emails.send({
+      // Resend returns { data, error } — capture it instead of swallowing.
+      const { data, error } = await resend.emails.send({
         from,
         to,
         replyTo: email,
         subject: `New lead — ${firstName} ${lastName ?? ""} (${lookingFor ?? "unspecified"})`,
         html,
       });
+      if (error) {
+        emailError = error.message;
+        console.error("Resend send failed", error);
+      } else {
+        emailed = !!data?.id;
+      }
     } else if (!forwarded) {
       // No GHL webhook and no email key — at least log it so nothing is lost.
       console.warn("Lead received but not delivered anywhere", {
@@ -93,7 +113,13 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    return NextResponse.json({ ok: true, ghl: forwarded });
+    return NextResponse.json({
+      ok: true,
+      ghl: forwarded,
+      emailed,
+      emailError,
+      resendConfigured: !!apiKey,
+    });
   } catch (err) {
     console.error("lead route error", err);
     return NextResponse.json({ error: "Failed to submit lead." }, { status: 500 });
