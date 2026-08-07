@@ -37,7 +37,8 @@ const PACKAGES = {
 
 // Health check — reports whether Stripe is configured (no secret exposed).
 export async function GET() {
-  const key = process.env.STRIPE_SECRET_KEY;
+  const rawKey = process.env.STRIPE_SECRET_KEY;
+  const key = (rawKey ?? "").trim();
   const keyType = !key
     ? "missing"
     : key.startsWith("sk_live") || key.startsWith("rk_live")
@@ -45,12 +46,32 @@ export async function GET() {
       : key.startsWith("sk_test") || key.startsWith("rk_test")
         ? "test"
         : "unrecognized";
+
+  // Temporary diagnostic: ask Stripe which account this key belongs to.
+  let account: Record<string, unknown> | { error: string } | null = null;
+  if (key) {
+    try {
+      const stripe = getStripe();
+      const acct = await stripe.accounts.retrieve();
+      account = {
+        id: acct.id,
+        businessName: acct.business_profile?.name ?? null,
+        email: acct.email ?? null,
+        country: acct.country ?? null,
+        defaultCurrency: acct.default_currency ?? null,
+        chargesEnabled: acct.charges_enabled ?? null,
+        payoutsEnabled: acct.payouts_enabled ?? null,
+      };
+    } catch (err) {
+      account = { error: err instanceof Error ? err.message : "account lookup failed" };
+    }
+  }
+
   return NextResponse.json({
-    stripeConfigured: !!key,
+    stripeConfigured: !!rawKey,
     keyType,
-    keyLength: key?.length ?? 0,
-    trimmedLength: key?.trim().length ?? 0,
-    hasWhitespace: !!key && key !== key.trim(),
+    hasWhitespace: !!rawKey && rawKey !== rawKey.trim(),
+    account,
   });
 }
 
