@@ -32,6 +32,23 @@ const PACKAGES = {
   },
 };
 
+// Health check — reports whether Stripe is configured (no secret exposed).
+export async function GET() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  const keyType = !key
+    ? "missing"
+    : key.startsWith("sk_live") || key.startsWith("rk_live")
+      ? "live"
+      : key.startsWith("sk_test") || key.startsWith("rk_test")
+        ? "test"
+        : "unrecognized";
+  return NextResponse.json({
+    stripeConfigured: !!key,
+    keyType,
+    keyLength: key?.length ?? 0,
+  });
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { tier, name, email, phone, brokerage, instagram, contentGoals, notes } =
@@ -80,7 +97,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ url: session.url });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Unknown error";
-    console.error("Stripe checkout error:", message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const type = (err as any)?.type ?? (err as Error)?.name ?? "unknown";
+    console.error("Stripe checkout error:", type, message);
+    return NextResponse.json({ error: message, type }, { status: 500 });
   }
 }
