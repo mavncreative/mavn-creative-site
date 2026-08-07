@@ -46,32 +46,10 @@ export async function GET() {
       : key.startsWith("sk_test") || key.startsWith("rk_test")
         ? "test"
         : "unrecognized";
-
-  // Temporary diagnostic: ask Stripe which account this key belongs to.
-  let account: Record<string, unknown> | { error: string } | null = null;
-  if (key) {
-    try {
-      const stripe = getStripe();
-      const acct = await stripe.accounts.retrieve();
-      account = {
-        id: acct.id,
-        businessName: acct.business_profile?.name ?? null,
-        email: acct.email ?? null,
-        country: acct.country ?? null,
-        defaultCurrency: acct.default_currency ?? null,
-        chargesEnabled: acct.charges_enabled ?? null,
-        payoutsEnabled: acct.payouts_enabled ?? null,
-      };
-    } catch (err) {
-      account = { error: err instanceof Error ? err.message : "account lookup failed" };
-    }
-  }
-
   return NextResponse.json({
     stripeConfigured: !!rawKey,
     keyType,
     hasWhitespace: !!rawKey && rawKey !== rawKey.trim(),
-    account,
   });
 }
 
