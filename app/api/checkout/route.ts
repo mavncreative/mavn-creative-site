@@ -12,32 +12,32 @@ function getStripe() {
 }
 
 const PACKAGES = {
-  essential: {
-    name: "Essential Package — MAVN Creative",
-    price: 24900,
+  "content-creator": {
+    name: "Content Creator Program — MAVN Creative",
+    price: 140000,
     description:
-      "Cinematic listing video (up to 90 sec) · Interior & exterior walk-through · Professional color grading · Licensed music · 48-hr turnaround · 1 revision",
+      "4 professionally produced reels · $350 per reel · 90-minute shooting session · Brand discovery + scripting included · Cancel any time",
   },
-  signature: {
-    name: "Signature Package — MAVN Creative",
-    price: 54900,
+  "double-down": {
+    name: "Double Down — MAVN Creative",
+    price: 280000,
     description:
-      "Cinematic listing video (up to 2 min) · FAA drone footage · Twilight shot · 20+ HDR photos · Professional color + LUT grading · 48-hr turnaround · 2 revisions",
+      "8 professionally produced reels · $350 per reel · Half-day shoot · Brand discovery + scripting included · Cancel any time",
   },
-  elite: {
-    name: "Elite Package — MAVN Creative",
-    price: 99900,
+  "market-leader": {
+    name: "Market Leader — MAVN Creative",
+    price: 420000,
     description:
-      "Extended cinematic video (3–4 min) · Full drone package · Twilight & golden hour · Agent intro clip · 35+ HDR photos · Unlimited revisions · Dedicated PM",
+      "12 professionally produced reels · $350 per reel · Full shoot day · Brand discovery + scripting included · Priority turnaround · Cancel any time",
   },
 };
 
 export async function POST(req: NextRequest) {
   try {
-    const { packageId, name, email, phone, propertyAddress, shootDate, notes } =
+    const { tier, name, email, phone, brokerage, instagram, contentGoals, notes } =
       await req.json();
 
-    const pkg = PACKAGES[packageId as keyof typeof PACKAGES];
+    const pkg = PACKAGES[tier as keyof typeof PACKAGES];
     if (!pkg) {
       return NextResponse.json({ error: "Invalid package" }, { status: 400 });
     }
@@ -67,11 +67,12 @@ export async function POST(req: NextRequest) {
       success_url: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/#packages`,
       metadata: {
-        packageId,
+        tier,
         customerName: name,
         phone: phone ?? "",
-        propertyAddress: propertyAddress ?? "",
-        shootDate: shootDate ?? "",
+        brokerage: brokerage ?? "",
+        instagram: instagram ?? "",
+        contentGoals: (contentGoals ?? "").slice(0, 500),
         notes: (notes ?? "").slice(0, 500),
       },
     });

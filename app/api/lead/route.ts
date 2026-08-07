@@ -89,6 +89,8 @@ export async function POST(req: NextRequest) {
       email,
       brokerage,
       lookingFor,
+      instagram,
+      notes,
       source,
     } = await req.json();
 
@@ -127,6 +129,8 @@ export async function POST(req: NextRequest) {
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Brokerage:</strong> ${brokerage ?? "—"}</p>
         <p><strong>Looking for:</strong> ${lookingFor ?? "—"}</p>
+        ${instagram ? `<p><strong>Instagram:</strong> ${instagram}</p>` : ""}
+        ${notes ? `<p><strong>Notes:</strong> ${notes}</p>` : ""}
         <p><strong>Added to GHL:</strong> ${ghl.created ? "yes" : "no"}</p>
       `;
       const { data, error } = await resend.emails.send({
