@@ -5,9 +5,12 @@ export const runtime = "nodejs";
 
 // Lazy-init so module load doesn't throw during build without env vars
 function getStripe() {
+  // Trim to guard against a trailing space/newline pasted into the env var,
+  // which corrupts the Authorization header and surfaces as a connection error.
+  const key = (process.env.STRIPE_SECRET_KEY ?? "").trim();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return new (Stripe as any)(process.env.STRIPE_SECRET_KEY!, {
-    maxNetworkRetries: 1,
+  return new (Stripe as any)(key, {
+    maxNetworkRetries: 2,
   });
 }
 
@@ -46,6 +49,8 @@ export async function GET() {
     stripeConfigured: !!key,
     keyType,
     keyLength: key?.length ?? 0,
+    trimmedLength: key?.trim().length ?? 0,
+    hasWhitespace: !!key && key !== key.trim(),
   });
 }
 
