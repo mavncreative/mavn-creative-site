@@ -285,112 +285,52 @@ export default function MavnCreativeSite() {
     },
   ];
 
-  // Monthly agent content packages (from MAVN content package pricing)
+  // Content Creator Program — one-time reel bundles ($350/reel; save vs $499 à la carte)
   const packages = [
     {
-      tier: "Tier 1 · Creator",
-      name: "Creator",
-      tagline: "Build your presence",
-      price: "$699",
+      id: "content-creator",
+      name: "Content Creator",
+      reels: "4 reels",
+      price: "$1,400",
+      save: "Save $596 vs à la carte",
       includes: [
-        "4 strategic videos / month",
-        "1 Social Lead Reel (vertical)",
-        "Done-for-you scripting & creative direction",
-        "Monthly strategy call",
-        "Caption + hashtag strategy",
-        "Up to 2 filming locations",
-        "Vertical-first delivery (Reels, TikTok, Shorts)",
-        "10% off all listing content",
-      ],
-      note: "Perfect for agents starting out",
-    },
-    {
-      tier: "Tier 2 · Signature",
-      name: "Signature",
-      tagline: "Build momentum & authority",
-      price: "$1,149",
-      includes: [
-        "5 strategic videos / month",
-        "2 Social Lead Reels (vertical)",
-        "FAA-certified drone footage included",
-        "Done-for-you scripting & creative direction",
-        "Monthly strategy call + content calendar",
-        "Up to 3 filming locations",
-        "Vertical-first delivery (Reels, TikTok, Shorts)",
-        "15% off all listing content",
-      ],
-      note: "Most popular for growing agents",
-      featured: true,
-    },
-    {
-      tier: "Tier 3 · Elite",
-      name: "Elite",
-      tagline: "Dominate your market",
-      price: "$1,499",
-      includes: [
-        "6 strategic videos / month",
-        "3 Social Lead Reels (vertical)",
-        "FAA-certified drone footage included",
-        "Dedicated monthly campaign / CTA video",
-        "Done-for-you scripting & creative direction",
-        "Bi-weekly strategy calls",
-        "Up to 3 filming locations",
-        "15% off all listing content",
-      ],
-      note: "For agents ready to own their market",
-    },
-  ];
-
-  // À la carte / one-time reel pricing (from Agent Branding Packages)
-  const alaCarte = [
-    {
-      name: "Single Reel",
-      subtitle: "One reel, one shoot day",
-      price: "$499",
-      unit: "/ reel",
-      includes: [
-        "1 professionally produced reel",
-        "Done-for-you scripting & creative direction",
-        "Brand discovery call",
-        "Professional color grading",
-        "Licensed music + sound design",
-        "1 round of revisions",
-        "Delivered within 48 hours",
+        "$350 per reel",
+        "90-minute shooting session",
+        "Brand discovery + scripting included",
+        "Leverage yourself",
+        "Cancel any time",
       ],
     },
     {
-      name: "Starter Pack",
-      subtitle: "4 reels · one shoot day",
-      price: "$999",
-      unit: "one-time",
-      badge: "Most Popular",
-      save: "Save $997 vs à la carte",
-      includes: [
-        "4 professionally produced reels",
-        "Done-for-you scripting & creative direction",
-        "Brand discovery session",
-        "~2 hr shoot day — all 4 reels in one session",
-        "Delivered one per week over 4 weeks",
-        "Color grading + licensed music & sound",
-        "2 rounds of revisions",
-      ],
-      featured: true,
-    },
-    {
-      name: "Growth Pack",
-      subtitle: "8 reels · one shoot day",
-      price: "$1,799",
-      unit: "one-time",
+      id: "double-down",
+      name: "Double Down",
+      reels: "8 reels",
+      price: "$2,800",
+      save: "Save $1,192 vs à la carte",
       badge: "Best Value",
-      save: "Save $2,193 vs à la carte",
+      featured: true,
       includes: [
-        "8 professionally produced reels",
-        "Done-for-you scripting & creative direction",
-        "Brand discovery session",
-        "Half-day shoot — all 8 reels in one session",
-        "Delivered one per week over 8 weeks",
-        "Color grading + licensed music & sound",
-        "Unlimited revisions · priority turnaround",
+        "$350 per reel",
+        "Half-day shoot day",
+        "Brand discovery + scripting included",
+        "Double the content",
+        "Maximum momentum",
+        "Cancel any time",
+      ],
+    },
+    {
+      id: "market-leader",
+      name: "Market Leader",
+      reels: "12 reels",
+      price: "$4,200",
+      save: "Save $1,788 vs à la carte",
+      includes: [
+        "$350 per reel",
+        "Full shoot day",
+        "Brand discovery + scripting included",
+        "Own your market",
+        "Priority turnaround",
+        "Cancel any time",
       ],
     },
   ];
@@ -726,41 +666,39 @@ export default function MavnCreativeSite() {
             ]} />
             <div className="relative z-10 mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-10 lg:py-24">
               <div className="mb-10 max-w-2xl">
-                <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">Agent Content Packages</p>
+                <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">Content Creator Program</p>
                 <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">
-                  Done-for-you content that builds your brand.
+                  Build a brand that sells for you.
                 </h2>
                 <p className="mt-4 leading-7 text-white/70">
-                  Monthly social content that builds your brand and generates inbound leads —
-                  scripted, shot, and delivered for you every month.
+                  Professionally produced reels — scripted, shot in one session, and delivered
+                  weekly. Built for consistency. No commitment, cancel anytime.
                 </p>
               </div>
 
-              {/* Tiers */}
+              {/* Bundle tiers */}
               <div className="grid gap-5 lg:grid-cols-3">
                 {packages.map((pkg) => (
                   <div
-                    key={pkg.name}
+                    key={pkg.id}
                     className={`card-lift flex flex-col rounded-[28px] border p-6 lg:p-7 ${
                       pkg.featured
                         ? "border-[#efcb6d]/45 bg-[#1f1f1f]"
                         : "border-[#efcb6d]/20 bg-[#1a1a1a]"
                     }`}
                   >
-                    {pkg.featured && (
+                    {pkg.badge && (
                       <div className="mb-4 inline-flex w-fit rounded-full bg-[#efcb6d] px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-black">
-                        Most Popular
+                        {pkg.badge}
                       </div>
                     )}
-                    <p className="text-[11px] uppercase tracking-[0.22em] text-[#efcb6d]">{pkg.tier}</p>
-                    <h3 className="mt-2 text-2xl font-semibold text-white">{pkg.name}</h3>
-                    <p className="mt-1 text-sm text-white/65">{pkg.tagline}</p>
+                    <h3 className="text-2xl font-semibold text-white">{pkg.name}</h3>
                     <div className="mt-5 border-y border-[#efcb6d]/15 py-5">
                       <p className="text-4xl font-semibold tracking-tight text-white lg:text-5xl">
                         {pkg.price}
-                        <span className="ml-1 text-sm font-normal text-white/55">/ month</span>
                       </p>
-                      <p className="mt-1 text-xs text-white/50">3–6 month commitment · billed monthly</p>
+                      <p className="mt-1 text-sm uppercase tracking-[0.2em] text-white/55">{pkg.reels}</p>
+                      <p className="mt-2 text-xs font-medium text-[#efcb6d]">{pkg.save}</p>
                     </div>
                     <div className="mt-6 flex-1 space-y-2.5">
                       {pkg.includes.map((item) => (
@@ -770,82 +708,41 @@ export default function MavnCreativeSite() {
                         </div>
                       ))}
                     </div>
-                    <p className="mt-5 rounded-2xl bg-[#efcb6d]/10 px-4 py-3 text-center text-sm font-medium text-white/85">
-                      {pkg.note}
-                    </p>
-                    <button
-                      onClick={() => goToTab("book")}
-                      className="btn-press mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#efcb6d] px-5 py-3.5 text-sm font-semibold text-black"
+                    <a
+                      href={`/checkout?tier=${pkg.id}`}
+                      className="btn-press mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#efcb6d] px-5 py-3.5 text-sm font-semibold text-black"
                     >
-                      Get Started
+                      Invest Now — {pkg.price}
                       <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                    </button>
+                    </a>
                   </div>
                 ))}
               </div>
 
-              {/* À la carte / per-reel pricing */}
-              <div className="mt-16">
-                <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">À La Carte</p>
-                <h3 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">
-                  Pay per reel — no commitment.
-                </h3>
-                <p className="mt-3 max-w-2xl leading-7 text-white/70">
-                  Not ready for a monthly plan? Book reels one at a time, or bundle a
-                  shoot day and save. Shoot once, publish every week.
-                </p>
-
-                <div className="mt-8 grid gap-5 lg:grid-cols-3">
-                  {alaCarte.map((item) => (
-                    <div
-                      key={item.name}
-                      className={`card-lift flex flex-col rounded-[28px] border p-6 lg:p-7 ${
-                        item.featured
-                          ? "border-[#efcb6d]/45 bg-[#1f1f1f]"
-                          : "border-[#efcb6d]/20 bg-[#1a1a1a]"
-                      }`}
-                    >
-                      {item.badge && (
-                        <div className="mb-4 inline-flex w-fit rounded-full bg-[#efcb6d] px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-black">
-                          {item.badge}
-                        </div>
-                      )}
-                      <h4 className="text-2xl font-semibold text-white">{item.name}</h4>
-                      <p className="mt-1 text-sm text-white/65">{item.subtitle}</p>
-                      <div className="mt-5 border-y border-[#efcb6d]/15 py-5">
-                        <p className="text-4xl font-semibold tracking-tight text-white lg:text-5xl">
-                          {item.price}
-                          <span className="ml-1 text-sm font-normal text-white/55">{item.unit}</span>
-                        </p>
-                        {item.save && (
-                          <p className="mt-1 text-xs font-medium text-[#efcb6d]">{item.save}</p>
-                        )}
-                      </div>
-                      <div className="mt-6 flex-1 space-y-2.5">
-                        {item.includes.map((inc) => (
-                          <div key={inc} className="flex items-start gap-2.5 text-sm text-white/85">
-                            <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-[#efcb6d]" />
-                            {inc}
-                          </div>
-                        ))}
-                      </div>
-                      <button
-                        onClick={() => goToTab("book")}
-                        className="btn-press mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#efcb6d] px-5 py-3.5 text-sm font-semibold text-black"
-                      >
-                        {item.name === "Single Reel" ? "Book a Reel" : "Get Started"}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                      </button>
-                    </div>
-                  ))}
+              {/* À la carte line */}
+              <div className="mt-8 flex flex-col gap-4 rounded-[28px] border border-[#efcb6d]/20 bg-[#151515] p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+                <div>
+                  <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">À La Carte</p>
+                  <p className="mt-2 text-2xl font-semibold text-white">
+                    $499 <span className="text-base font-normal text-white/55">per reel</span>
+                  </p>
+                  <p className="mt-1 text-sm text-white/65">
+                    Prefer to start small? Book reels one at a time — separate shoot days.
+                  </p>
                 </div>
+                <button
+                  onClick={() => goToTab("book")}
+                  className="btn-press flex-none rounded-2xl border border-[#efcb6d]/40 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white"
+                >
+                  Book a single reel
+                </button>
               </div>
 
-              {/* Monthly content mix */}
+              {/* Content mix */}
               <div className="mt-16">
-                <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">Monthly Content Mix</p>
+                <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">The Content Mix</p>
                 <h3 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">
-                  4 video types, every month.
+                  4 reel types that build your brand.
                 </h3>
                 <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
                   {videoTypes.map((v, i) => (

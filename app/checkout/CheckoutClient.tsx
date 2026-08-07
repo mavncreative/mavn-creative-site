@@ -1,69 +1,68 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const PACKAGES = {
-  essential: {
-    name: "Essential",
-    price: "$249",
-    subtitle: "Perfect for standard listings.",
+  "content-creator": {
+    name: "Content Creator",
+    price: "$1,400",
+    reels: "4 reels",
+    save: "Save $596 vs à la carte",
     features: [
-      "Cinematic listing video (up to 90 sec)",
-      "Interior & exterior walk-through",
-      "Professional color grading",
-      "Licensed background music",
-      "Standard 48-hour turnaround",
-      "1 round of revisions included",
+      "$350 per reel",
+      "90-minute shooting session",
+      "Brand discovery + scripting included",
+      "Leverage yourself",
+      "Cancel any time",
     ],
   },
-  signature: {
-    name: "Signature",
-    price: "$549",
-    subtitle: "Our most popular package.",
+  "double-down": {
+    name: "Double Down",
+    price: "$2,800",
+    reels: "8 reels",
+    save: "Save $1,192 vs à la carte",
     featured: true,
+    badge: "Best Value",
     features: [
-      "Cinematic listing video (up to 2 min)",
-      "FAA-certified drone aerial footage",
-      "Twilight / golden hour exterior shot",
-      "Professional photography (20+ photos)",
-      "Professional color + LUT grading",
-      "Licensed music + sound design",
-      "Standard 48-hour turnaround",
-      "2 rounds of revisions included",
+      "$350 per reel",
+      "Half-day shoot day",
+      "Brand discovery + scripting included",
+      "Double the content",
+      "Maximum momentum",
+      "Cancel any time",
     ],
   },
-  elite: {
-    name: "Elite",
-    price: "$999",
-    subtitle: "For luxury & premium listings.",
+  "market-leader": {
+    name: "Market Leader",
+    price: "$4,200",
+    reels: "12 reels",
+    save: "Save $1,788 vs à la carte",
     features: [
-      "Extended cinematic video (3–4 min)",
-      "Full drone package — multiple angles",
-      "Twilight & golden hour sessions",
-      "Agent intro / promo video clip",
-      "Professional photography (35+ photos)",
-      "Standard 48-hour turnaround",
-      "Unlimited revisions",
-      "Dedicated project manager",
+      "$350 per reel",
+      "Full shoot day",
+      "Brand discovery + scripting included",
+      "Own your market",
+      "Priority turnaround",
+      "Cancel any time",
     ],
   },
 } as const;
 
-type PackageId = keyof typeof PACKAGES;
+type TierId = keyof typeof PACKAGES;
 
 export default function CheckoutClient() {
   const searchParams = useSearchParams();
-  const router = useRouter();
-  const packageId = (searchParams.get("package") ?? "essential") as PackageId;
-  const pkg = PACKAGES[packageId] ?? PACKAGES.essential;
+  const tier = (searchParams.get("tier") ?? "content-creator") as TierId;
+  const pkg = PACKAGES[tier] ?? PACKAGES["content-creator"];
 
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
-    propertyAddress: "",
-    shootDate: "",
+    brokerage: "",
+    instagram: "",
+    contentGoals: "",
     notes: "",
   });
   const [loading, setLoading] = useState(false);
@@ -75,17 +74,37 @@ export default function CheckoutClient() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.name || !form.email) {
-      setError("Name and email are required.");
-      return;
-    }
+    if (!form.name.trim()) return setError("Full name is required.");
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) return setError("Enter a valid email.");
+    if (!form.phone.trim()) return setError("Phone is required.");
     setError("");
     setLoading(true);
     try {
+      // Capture the lead first (email + GHL) so we have it even if payment is abandoned.
+      const [first, ...rest] = form.name.trim().split(" ");
+      fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: first,
+          lastName: rest.join(" "),
+          email: form.email,
+          phone: form.phone,
+          brokerage: form.brokerage,
+          lookingFor: `${pkg.name} (${pkg.reels})`,
+          instagram: form.instagram,
+          notes: form.contentGoals || form.notes
+            ? `Goals: ${form.contentGoals} | Notes: ${form.notes}`
+            : "",
+          source: `checkout-${tier}`,
+        }),
+      }).catch(() => {});
+
+      // Create the Stripe checkout session and redirect.
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ packageId, ...form }),
+        body: JSON.stringify({ tier, ...form }),
       });
       const data = await res.json();
       if (!res.ok || !data.url) throw new Error(data.error ?? "Something went wrong.");
@@ -111,7 +130,7 @@ export default function CheckoutClient() {
               <p className="text-xs tracking-[0.28em] text-[#efcb6d]">REAL ESTATE MEDIA</p>
             </div>
           </a>
-          <a href="/#packages" className="text-sm text-white/60 transition hover:text-white">
+          <a href="/" className="text-sm text-white/60 transition hover:text-white">
             ← Back to packages
           </a>
         </div>
@@ -121,17 +140,17 @@ export default function CheckoutClient() {
         <div className="mb-10">
           <p className="text-sm uppercase tracking-[0.28em] text-[#efcb6d]">Checkout</p>
           <h1 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">
-            Book your shoot
+            A few quick details before checkout.
           </h1>
-          <p className="mt-3 text-white/60">
-            Fill in your details below — you'll be taken to our secure payment page to complete booking.
+          <p className="mt-3 max-w-2xl text-white/60">
+            We&apos;ll use this to prepare your strategy call. You&apos;ll be redirected to
+            secure payment after submitting.
           </p>
         </div>
 
         <div className="grid gap-10 lg:grid-cols-[1fr_380px]">
           {/* Form */}
           <form onSubmit={handleSubmit} className="rounded-[32px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-6 lg:p-8">
-            <h2 className="mb-6 text-lg font-semibold text-white">Your details</h2>
             <div className="grid gap-5 md:grid-cols-2">
               <div>
                 <label className="mb-2 block text-sm font-medium text-white">
@@ -148,7 +167,7 @@ export default function CheckoutClient() {
               </div>
               <div>
                 <label className="mb-2 block text-sm font-medium text-white">
-                  Email Address <span className="text-[#efcb6d]">*</span>
+                  Email <span className="text-[#efcb6d]">*</span>
                 </label>
                 <input
                   type="email"
@@ -160,41 +179,57 @@ export default function CheckoutClient() {
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-medium text-white">Phone Number</label>
+                <label className="mb-2 block text-sm font-medium text-white">
+                  Phone <span className="text-[#efcb6d]">*</span>
+                </label>
                 <input
                   type="tel"
                   value={form.phone}
                   onChange={(e) => update("phone", e.target.value)}
                   placeholder="(555) 555-5555"
+                  required
                   className={inputClass}
                 />
               </div>
               <div>
-                <label className="mb-2 block text-sm font-medium text-white">Preferred Shoot Date</label>
-                <input
-                  type="date"
-                  value={form.shootDate}
-                  onChange={(e) => update("shootDate", e.target.value)}
-                  className={inputClass}
-                />
-              </div>
-              <div className="md:col-span-2">
-                <label className="mb-2 block text-sm font-medium text-white">Property Address</label>
+                <label className="mb-2 block text-sm font-medium text-white">Brokerage / Company</label>
                 <input
                   type="text"
-                  value={form.propertyAddress}
-                  onChange={(e) => update("propertyAddress", e.target.value)}
-                  placeholder="123 Main Street, City, State"
+                  value={form.brokerage}
+                  onChange={(e) => update("brokerage", e.target.value)}
+                  placeholder="Your brokerage"
                   className={inputClass}
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="mb-2 block text-sm font-medium text-white">Project Notes</label>
+                <label className="mb-2 block text-sm font-medium text-white">Instagram Handle</label>
+                <input
+                  type="text"
+                  value={form.instagram}
+                  onChange={(e) => update("instagram", e.target.value)}
+                  placeholder="@yourhandle"
+                  className={inputClass}
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="mb-2 block text-sm font-medium text-white">Content Goals</label>
                 <textarea
-                  rows={4}
+                  rows={3}
+                  value={form.contentGoals}
+                  onChange={(e) => update("contentGoals", e.target.value)}
+                  placeholder="What do you want your content to accomplish?"
+                  className={inputClass}
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="mb-2 block text-sm font-medium text-white">
+                  Anything else you&apos;d like us to know?
+                </label>
+                <textarea
+                  rows={3}
                   value={form.notes}
                   onChange={(e) => update("notes", e.target.value)}
-                  placeholder="Any details about the property, access, timeline, or special requests..."
+                  placeholder="Optional"
                   className={inputClass}
                 />
               </div>
@@ -206,18 +241,16 @@ export default function CheckoutClient() {
               </p>
             )}
 
-            <div className="mt-6 flex items-center justify-between gap-4">
-              <p className="text-xs leading-5 text-white/40">
-                You'll be redirected to Stripe's secure payment page. Your card details are never stored by us.
-              </p>
-              <button
-                type="submit"
-                disabled={loading}
-                className="btn-press flex-shrink-0 rounded-2xl bg-[#efcb6d] px-8 py-3.5 text-sm font-semibold text-black disabled:opacity-60"
-              >
-                {loading ? "Redirecting…" : "Proceed to Payment →"}
-              </button>
-            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-press mt-6 flex w-full items-center justify-center rounded-2xl bg-[#efcb6d] px-8 py-4 text-sm font-semibold text-black disabled:opacity-60"
+            >
+              {loading ? "Redirecting…" : "Continue to Payment →"}
+            </button>
+            <p className="mt-3 text-center text-xs text-white/45">
+              Secure checkout powered by Stripe. Cancel anytime.
+            </p>
           </form>
 
           {/* Package summary */}
@@ -229,16 +262,16 @@ export default function CheckoutClient() {
                   : "border-[#efcb6d]/20 bg-[#1a1a1a]"
               }`}
             >
-              {"featured" in pkg && pkg.featured && (
-                <div className="mb-4 inline-flex rounded-full border border-[#efcb6d]/30 bg-[#efcb6d] px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-black">
-                  Most Popular
+              {"badge" in pkg && pkg.badge && (
+                <div className="mb-4 inline-flex rounded-full bg-[#efcb6d] px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-black">
+                  {pkg.badge}
                 </div>
               )}
               <h3 className="text-2xl font-semibold text-white">{pkg.name}</h3>
-              <p className="mt-1 text-sm text-white/60">{pkg.subtitle}</p>
               <div className="my-5 border-y border-[#efcb6d]/15 py-5">
                 <p className="text-5xl font-semibold tracking-tight text-white">{pkg.price}</p>
-                <p className="mt-1 text-sm text-white/50">per property</p>
+                <p className="mt-1 text-sm uppercase tracking-[0.2em] text-white/55">{pkg.reels}</p>
+                <p className="mt-2 text-xs font-medium text-[#efcb6d]">{pkg.save}</p>
               </div>
               <ul className="space-y-2.5">
                 {pkg.features.map((f) => (
@@ -253,9 +286,7 @@ export default function CheckoutClient() {
             </div>
 
             <div className="rounded-[24px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-5">
-              <p className="text-xs font-medium uppercase tracking-[0.18em] text-white/50">
-                Questions?
-              </p>
+              <p className="text-xs font-medium uppercase tracking-[0.18em] text-white/50">Questions?</p>
               <a
                 href="mailto:contact@mavncreative.com"
                 className="mt-2 block text-sm font-medium text-white transition hover:text-[#efcb6d]"
@@ -268,15 +299,6 @@ export default function CheckoutClient() {
               >
                 (612) 488-3825
               </a>
-            </div>
-
-            <div className="rounded-[24px] border border-[#efcb6d]/20 bg-[#1a1a1a] p-5">
-              <p className="text-xs font-medium uppercase tracking-[0.18em] text-white/50">
-                Secure payment
-              </p>
-              <p className="mt-2 text-sm leading-6 text-white/70">
-                Payments are processed by Stripe — PCI compliant and encrypted end-to-end.
-              </p>
             </div>
           </div>
         </div>
