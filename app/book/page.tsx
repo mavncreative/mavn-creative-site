@@ -194,6 +194,11 @@ export default function BookLandingPage() {
         <p className="mt-10 text-center text-[11px] tracking-wide text-white/35">
           MAVN Creative · mavncreative.com · (612) 488-3825
         </p>
+        <p className="mt-2 text-center text-[11px] tracking-wide text-white/35">
+          <a href="/privacy" className="underline transition hover:text-[#efcb6d]">
+            Privacy Policy
+          </a>
+        </p>
       </main>
     </div>
   );
