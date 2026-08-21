@@ -862,7 +862,13 @@ export default function MavnCreativeSite() {
                         <p className="text-xs text-red-400 sm:col-span-2">{leadError}</p>
                       )}
                       <p className="text-[11px] leading-5 text-white/45 sm:col-span-2">
-                        By submitting you agree to be contacted about your project. No spam.
+                        By submitting you agree to be contacted by call, text, or email about your
+                        project. Message and data rates may apply; reply STOP to opt out. No spam.
+                        See our{" "}
+                        <a href="/privacy" className="text-white/70 underline hover:text-[#efcb6d]">
+                          Privacy Policy
+                        </a>
+                        .
                       </p>
                     </form>
                   )}
@@ -903,7 +909,8 @@ export default function MavnCreativeSite() {
           <p className="text-sm text-white/55">
             © {new Date().getFullYear()} MAVN Creative · Twin Cities Real Estate Media
           </p>
-          <div className="flex items-center gap-5 text-sm text-white/55">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-white/55">
+            <a href="/privacy" className="transition hover:text-[#efcb6d]">Privacy Policy</a>
             <a href="https://instagram.com/mavn.creative" target="_blank" rel="noopener noreferrer" className="transition hover:text-[#efcb6d]">@mavn.creative</a>
             <a href="tel:6124883825" className="transition hover:text-[#efcb6d]">(612) 488-3825</a>
           </div>
