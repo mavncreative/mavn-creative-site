@@ -224,6 +224,13 @@ export default function MavnCreativeSite() {
 
   const portfolioItems = [
     {
+      title: "Personal Brand Intro",
+      type: "Branding Video",
+      description:
+        "A personal brand intro reel built to introduce the agent, build trust, and make them memorable online.",
+      videoSrc: "/videos/personal-brand-intro.mp4",
+    },
+    {
       title: "5509 Blaisdell Ave",
       type: "Listing Video",
       description:
