@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import HeroCarousel from "./HeroCarousel";
 
 
 // ── Reel tile — autoplays muted while on screen, tap to unmute ───────────────
@@ -487,21 +488,8 @@ export default function AgentsLanding() {
             </p>
           </div>
 
-          {/* Reel fan */}
-          <div className="relative mx-auto mt-14 flex max-w-3xl items-end justify-center gap-3 sm:gap-5">
-            <Reel
-              src="/videos/5509-blaisdell-ave.mp4"
-              className="hidden w-[30%] -rotate-3 opacity-80 sm:block"
-            />
-            <Reel
-              src="/videos/personal-brand-intro.mp4"
-              className="w-[58%] shadow-[0_30px_90px_rgba(239,203,109,0.18)] ring-[#efcb6d]/40 sm:w-[36%]"
-            />
-            <Reel
-              src="/videos/913-e-39th-st.mp4"
-              className="hidden w-[30%] rotate-3 opacity-80 sm:block"
-            />
-          </div>
+          {/* Hero reel carousel */}
+          <HeroCarousel slides={reels} />
         </div>
 
         {/* Proof strip */}
